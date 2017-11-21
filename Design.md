@@ -1,4 +1,4 @@
-What are the methods?/n /n
+What are the methods?  
 What is the representation?
 What are the rep invariants and abstraction functions?
 Think about extensibility.
