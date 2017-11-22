@@ -71,8 +71,9 @@ YelpDB
 //Rep Invariant: Each list must contain a form of distinct restaruants, users and reviews.  
 //Constructor  
 YelpD5(String filename1, String filename2, String filename3)  
-//the parser will use JSON and call the constructors for Restaurant, User, and review.  
-parse()  
+//the parser will use JSON and call the constructors for Restaurant, User, and review. Then add them to there appriopriate lists.
+parse()
+getReviews(Restaurant restaraunt)
 Interface methods
 
 
