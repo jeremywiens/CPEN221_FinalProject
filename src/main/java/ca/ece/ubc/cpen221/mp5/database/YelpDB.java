@@ -4,15 +4,13 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.ToDoubleBiFunction;
 
-import org.json.simple.parser.ParseException;
-
 import java.io.*;
 
 public class YelpDB implements MP5Db {
 
-	private List<Restaurants> restaurants;
-	private List<Reviews> reviews;
-	private List<Users> users;
+	private List<Object> restaurants;
+	private List<Object> reviews;
+	private List<Object> users;
 
 	// Maybe we should change the order so users are created first? Then every new
 	// review object can be added to the user who wrote it?
