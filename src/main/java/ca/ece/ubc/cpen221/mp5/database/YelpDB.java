@@ -4,20 +4,22 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.ToDoubleBiFunction;
 
+import org.json.simple.parser.ParseException;
+
 import java.io.*;
 
 public class YelpDB implements MP5Db {
-	
-	//private List<Restaurants> restaurants;
-	//private List<Reviews> reviews;
-	//private List<Users> users;
-	String restaurants;
-	
-	public YelpDB(String restaurants_file, String reviews_file, String users_file) throws IOException {       
+
+	private List<Restaurants> restaurants;
+	private List<Reviews> reviews;
+	private List<Users> users;
+
+	// Maybe we should change the order so users are created first? Then every new
+	// review object can be added to the user who wrote it?
+	public YelpDB(String restaurants_file, String reviews_file, String users_file) throws IOException {
 		restaurants = ParseJSON.ParseFile(restaurants_file, 1);
-		//reviews = ParseJSON.ParseFile(reviews_file, 2);
-		//users = ParseJSON.ParseFile(users_file, 3);
-		System.out.println(restaurants);
+		reviews = ParseJSON.ParseFile(reviews_file, 2);
+		users = ParseJSON.ParseFile(users_file, 3);
 	}
 
 	@Override
@@ -39,4 +41,3 @@ public class YelpDB implements MP5Db {
 	}
 
 }
-
