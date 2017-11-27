@@ -1,9 +1,12 @@
 package ca.ece.ubc.cpen221.mp5.database;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.function.ToDoubleBiFunction;
+
+import ca.ece.ubc.cpen221.mp5.learning.KMeans;
 
 import java.io.*;
 import java.math.BigDecimal;
@@ -30,8 +33,35 @@ public class YelpDB implements MP5Db {
 
 	@Override
 	public String kMeansClusters_json(int k) {
-		// TODO Auto-generated method stub
-		return null;
+		//Map Integers to Restaurants
+		int count = 0;
+		HashMap<Integer, List<Double>> sendToKeans = new HashMap<>();
+		HashMap<Integer, Restaurant> intToRestaurant = new HashMap<>();
+		
+		for(Restaurant R : restaurants) {
+			List<Double> xAndY = new ArrayList<>();
+			xAndY.add(R.getLatitude().doubleValue());
+			xAndY.add(R.getLongitude().doubleValue());
+			sendToKeans.put(count, xAndY);
+			intToRestaurant.put(count, R);
+			count++;
+		}
+		
+		List<Set<Integer>> clusteredList = KMeans.findKMeans(sendToKeans, k);
+		String returnString = "[";
+		//[{"x": 37.8702006, "y": -122.2659014, "name": "Cinnaholic", "cluster": 3, "weight": 5.0}, {"x": 37.8703...
+		int cluster = 0;
+		for(Set<Integer> clusterSet : clusteredList) {
+			for(int restaurant : clusterSet) {
+				returnString = returnString + "{\"x\": " + intToRestaurant.get(restaurant).getLatitude() + ", \"y\": " + intToRestaurant.get(restaurant).getLongitude();
+				returnString = returnString + ", \"name\": \"" + intToRestaurant.get(restaurant).getName() + "\", \"cluster\": " + cluster;
+				returnString = returnString + ", \"weight\": 4.0}, ";
+			}
+			cluster++;
+		}
+		
+		returnString = returnString.substring(0, returnString.length()-2) + "]";
+		return returnString;
 	}
 
 	@Override

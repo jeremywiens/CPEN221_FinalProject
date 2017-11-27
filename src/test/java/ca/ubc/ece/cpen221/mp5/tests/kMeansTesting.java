@@ -4,8 +4,10 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import ca.ece.ubc.cpen221.mp5.database.YelpDB;
 import ca.ece.ubc.cpen221.mp5.learning.KMeans;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,10 +40,15 @@ public class kMeansTesting {
 		thisMap.put(2, two);
 		thisMap.put(3, three);
 		thisMap.put(4, four);
-		
-		//System.out.println(thisMap.toString());
-		//System.out.println(KMeans.DoKMeans(thisMap, 8));
-		
+
+		System.out.println(thisMap.toString());
+		System.out.println(KMeans.findKMeans(thisMap, 2));
+
+	}
+	@Test
+	public void test1() throws IOException {
+		YelpDB hello = new YelpDB("data/restaurants.json", "data/reviews.json", "data/users.json");
+		System.out.println(hello.kMeansClusters_json(5));
 	}
 
 }

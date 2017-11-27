@@ -2,19 +2,35 @@ package ca.ece.ubc.cpen221.mp5.learning;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 public class KMeans {
-	// private static HashMap<Integer, List<Integer>> kPoints;
-
+	
+	public static List<Set<Integer>> findKMeans(Map<Integer, List<Double>> thisMap, int k){
+		Map<Integer, Integer> clusteredMap = DoKMeans(thisMap, k);
+		List<Set<Integer>> clusteredList = new ArrayList<Set<Integer>>();
+		for(int i = 0; i < k; i++) {
+			Set<Integer> kCluster = new HashSet<>();
+			for(int Restaurant : clusteredMap.keySet()) {
+				if(clusteredMap.get(Restaurant) == i) {
+					kCluster.add(Restaurant);
+				}
+			}
+			clusteredList.add(kCluster);
+		}
+		return clusteredList;
+	}
+	
 	// The maps parameter is integer which symbolizes the element and lists is x and
 	// y coordinates
 	// returns a map with integer which symolizes the element and second integer
 	// symbolizes its cluster
 	// Map<Integer, Object>
-	public static Map<Integer, Integer> DoKMeans(Map<Integer, List<Double>> thisMap, int k) {
+	private static Map<Integer, Integer> DoKMeans(Map<Integer, List<Double>> thisMap, int k) {
 		HashMap<Integer, List<Double>> kPoints = getInitialPoints(thisMap, k);
 		System.out.println(kPoints + "initial k");
 		boolean change = true;
