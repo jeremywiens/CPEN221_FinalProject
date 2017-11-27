@@ -10,26 +10,43 @@ import java.util.List;
 public class ParseJSON {
 
 	// errors should be solved once types have been created.
-	private static List<Object> thisList = new ArrayList<>();
+	private static List<Restaurant> RestaurantList = new ArrayList<Restaurant>();
+	private static List<User> UserList = new ArrayList<User>();
+	private static List<Review> ReviewList = new ArrayList<Review>();
 
-	public static List<Object> ParseFile(String filename, int type) throws IOException {
+	public static List<Restaurant> ParseRestaurant(String filename) throws IOException {
 
 		try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
 			String line;
 			while ((line = br.readLine()) != null) {
-				if (type == 1) {
-					Restaurant thisRestaurant = new Restaurant(line);
-					thisList.add(thisRestaurant);
-				} else if (type == 2) {
-					Review thisReview = new Review(line);
-					thisList.add(thisReview);
-				} else if (type == 3) {
-					User thisUser = new User(line);
-					thisList.add(thisUser);
-				}
+				Restaurant thisRestaurant = new Restaurant(line);
+				RestaurantList.add(thisRestaurant);
 			}
+			return RestaurantList;
+		}
+	}
 
-			return thisList;
+	public static List<Review> ParseReview(String filename) throws IOException {
+
+		try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
+			String line;
+			while ((line = br.readLine()) != null) {
+				Review thisReview = new Review(line);
+				ReviewList.add(thisReview);
+			}
+			return ReviewList;
+		}
+	}
+	
+	public static List<User> ParseUser(String filename) throws IOException {
+
+		try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
+			String line;
+			while ((line = br.readLine()) != null) {
+				User thisUser = new User(line);
+				UserList.add(thisUser);
+			}
+			return UserList;
 		}
 	}
 }
