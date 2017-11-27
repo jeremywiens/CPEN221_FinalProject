@@ -4,6 +4,7 @@ import java.io.StringReader;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.json.*;
 import javax.json.stream.JsonParser;
@@ -110,6 +111,15 @@ public class User {
 	public BigDecimal getAvgStars() {
 		return this.average_stars;
 	}
+	
+	public List<Restaurant> getRestaurantReviews(){
+		List<Restaurant> restaurants = new ArrayList<Restaurant>();
+		
+		
+		
+		return restaurants;
+	}
+	
 
 }
 
