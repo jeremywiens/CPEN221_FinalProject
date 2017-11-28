@@ -53,9 +53,10 @@ public class YelpDB implements MP5Db {
 		int cluster = 0;
 		for(Set<Integer> clusterSet : clusteredList) {
 			for(int restaurant : clusterSet) {
-				returnString = returnString + "{\"x\": " + intToRestaurant.get(restaurant).getLatitude() + ", \"y\": " + intToRestaurant.get(restaurant).getLongitude();
-				returnString = returnString + ", \"name\": \"" + intToRestaurant.get(restaurant).getName() + "\", \"cluster\": " + cluster;
-				returnString = returnString + ", \"weight\": 4.0}, ";
+				returnString = returnString + "{\"x\": " + intToRestaurant.get(restaurant).getLatitude() + ", \"y\": "
+						+ intToRestaurant.get(restaurant).getLongitude() + ", \"name\": \""
+						+ intToRestaurant.get(restaurant).getName() + "\", \"cluster\": " + cluster
+						+ ", \"weight\": 4.0}, ";
 			}
 			cluster++;
 		}
