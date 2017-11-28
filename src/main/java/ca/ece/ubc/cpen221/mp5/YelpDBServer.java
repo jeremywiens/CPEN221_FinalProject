@@ -93,13 +93,26 @@ public class YelpDBServer {
 			// each request is a single line containing a number
 			for (String line = in.readLine(); line != null; line = in.readLine()) {
 				System.err.println("request: " + line);
+				String[] newArgs = line.split(" ");
 				try {
-					int x = Integer.valueOf(line);
-					// compute answer and send back to client
-					// BigInteger y = fibonacci(x);
-					// System.err.println("reply: " + y);
-					// out.println(y);
-				} catch (NumberFormatException e) {
+					String command = newArgs[0];
+					
+					if(command.trim().toUpperCase().equals("GETRESTAURANT")) {
+						YelpDB.GetRestaurant(line.substring(13, line.length()).trim());
+					}
+					else if(command.trim().toUpperCase().equals("ADDUSER")) {
+						YelpDB.AddUser(line.substring(7, line.length()).trim());
+					}
+					else if(command.trim().toUpperCase().equals("ADDRESTAURANT")) {
+						YelpDB.AddRestaurant(line.substring(13, line.length()).trim());
+					}
+					else if(command.trim().toUpperCase().equals("ADDREVIEW")) {
+						YelpDB.AddReview(line.substring(9, line.length()).trim());
+					}
+					else {
+						System.err.println("ERR: ILLEGAL_REQUEST");
+					}
+				} catch (Exception e) {
 					// complain about ill-formatted request
 					System.err.println("reply: err");
 					out.print("err\n");
