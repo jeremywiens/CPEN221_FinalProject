@@ -32,7 +32,6 @@ public class KMeans {
 	// Map<Integer, Object>
 	private static Map<Integer, Integer> DoKMeans(Map<Integer, List<Double>> thisMap, int k) {
 		HashMap<Integer, List<Double>> kPoints = getInitialPoints(thisMap, k);
-		System.out.println(kPoints + "initial k");
 		boolean change = true;
 		HashMap<Integer, Integer> objectToCluster = new HashMap<>();
 		// Initialize thisMap to put all points in the first cluster
@@ -65,7 +64,6 @@ public class KMeans {
 				}
 			}
 			kPoints = reEvalKPoints(thisMap, objectToCluster, k, kPoints);
-			System.out.println(kPoints);
 		}
 		return objectToCluster;
 	}
@@ -133,7 +131,7 @@ public class KMeans {
 
 		Random rand = new Random();
 
-		int n = rand.nextInt(50) + 1;
+		//int n = rand.nextInt(50) + 1;
 		// 50 is the maximum and the 1 is our minimum
 		for (int i = 0; i < k; i++) {
 			List<Double> kList = new ArrayList<>();

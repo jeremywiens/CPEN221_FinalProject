@@ -41,14 +41,15 @@ public class kMeansTesting {
 		thisMap.put(3, three);
 		thisMap.put(4, four);
 
-		System.out.println(thisMap.toString());
-		System.out.println(KMeans.findKMeans(thisMap, 2));
+		thisMap.toString();
+		KMeans.findKMeans(thisMap, 10);
 
 	}
+
 	@Test
 	public void test1() throws IOException {
 		YelpDB hello = new YelpDB("data/restaurants.json", "data/reviews.json", "data/users.json");
-		System.out.println(hello.kMeansClusters_json(5));
+		hello.kMeansClusters_json(4);
 	}
 
 }
