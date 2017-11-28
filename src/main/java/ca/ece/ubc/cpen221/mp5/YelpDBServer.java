@@ -98,16 +98,16 @@ public class YelpDBServer {
 					String command = newArgs[0];
 					
 					if(command.trim().toUpperCase().equals("GETRESTAURANT")) {
-						YelpDB.GetRestaurant(line.substring(13, line.length()).trim());
+						thisYelp.GetRestaurant(line.substring(13, line.length()).trim());
 					}
 					else if(command.trim().toUpperCase().equals("ADDUSER")) {
-						YelpDB.AddUser(line.substring(7, line.length()).trim());
+						thisYelp.AddUser(line.substring(7, line.length()).trim());
 					}
 					else if(command.trim().toUpperCase().equals("ADDRESTAURANT")) {
-						YelpDB.AddRestaurant(line.substring(13, line.length()).trim());
+						thisYelp.AddRestaurant(line.substring(13, line.length()).trim());
 					}
 					else if(command.trim().toUpperCase().equals("ADDREVIEW")) {
-						YelpDB.AddReview(line.substring(9, line.length()).trim());
+						thisYelp.AddReview(line.substring(9, line.length()).trim());
 					}
 					else {
 						System.err.println("ERR: ILLEGAL_REQUEST");

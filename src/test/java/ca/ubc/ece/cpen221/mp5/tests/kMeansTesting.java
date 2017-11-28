@@ -48,7 +48,7 @@ public class kMeansTesting {
 	@Test
 	public void test1() throws IOException {
 		YelpDB hello = new YelpDB("data/restaurants.json", "data/reviews.json", "data/users.json");
-		System.out.println(hello.kMeansClusters_json(5));
+		System.out.println(hello.kMeansClusters_json(2));
 	}
 
 }
