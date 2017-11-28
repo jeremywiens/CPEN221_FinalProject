@@ -112,13 +112,6 @@ public class User {
 		return this.average_stars;
 	}
 	
-	public List<Restaurant> getRestaurantReviews(){
-		List<Restaurant> restaurants = new ArrayList<Restaurant>();
-		
-		
-		
-		return restaurants;
-	}
 	
 
 }

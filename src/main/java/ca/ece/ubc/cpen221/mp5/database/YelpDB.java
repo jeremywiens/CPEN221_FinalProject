@@ -35,12 +35,13 @@ public class YelpDB implements MP5Db {
 	}
 
 	@Override
-	public ToDoubleBiFunction getPredictorFunction(String user) {
+	public ToDoubleBiFunction getPredictorFunction(String user) { //What do I return??? This is weird.
 		User thisUser = null; // is this the user id or username?
 		List<Restaurant> Restaurants = new ArrayList<Restaurant>();
 		List<Review> Reviews = new ArrayList<Review>();
 		List<Double> sumMeanx = new ArrayList<Double>();
 		List<Double> sumMeany = new ArrayList<Double>();
+		ToDoubleBiFunction <Double, Double> Regression;
 		double avgY;
 		double avgX;
 		double Sxx = 0.0;
@@ -54,9 +55,10 @@ public class YelpDB implements MP5Db {
 				thisUser = this.users.get(i);
 			}
 		}
-		avgY = thisUser.getAvgStars().doubleValue();// I'm assuming this is right based on that every review is listed in database
+		
 		Restaurants = this.getRestaurantReviews(user);// this assumes passing a user ID to getPredictorFunction
-		Reviews = this.getUserReviews(user); // this assumes passing a user ID to getPredictorFunction
+		Reviews = this.getUserReviews(user);
+		avgY = calcAvgY(Reviews);// this assumes passing a user ID to getPredictorFunction
 		avgX = calcAvgX(Restaurants);
 		sumMeanx = sumMeanX(Restaurants, avgX);
 		sumMeany = sumMeanY(Reviews, avgY); // based on avgY assumption
@@ -74,8 +76,10 @@ public class YelpDB implements MP5Db {
 		a = avgY - b*avgX;
 		Rsquared = Sxy*Sxy/(Sxx*Syy); //Now just have to compute the function and create it but unclear about how to do that.
 		//Possibly y = ax+b
+		
+		Regression = (x,y) -> a*x +b;
 
-		return null;
+		return Regression;
 	}
 
 	public List<Restaurant> getRestaurantReviews(String user_ID) {
@@ -109,14 +113,26 @@ public class YelpDB implements MP5Db {
 	
 	private double calcAvgX(List<Restaurant> Restaurants) {
 		double avg = 0.0;
+		int count = 0;
 		for (int i = 0; i < Restaurants.size(); i++) {
 			avg += Restaurants.get(i).getPrice();
+			count++;
 		}
 		
-		return avg;
+		return avg/count;
+	}
+	
+	private double calcAvgY(List<Review> Reviews) {
+		double avg = 0.0;
+		int count = 0;
+		for (int i = 0; i < Reviews.size(); i++) {
+			avg+= Reviews.get(i).getNumStars();
+			count++;
+		}
+		return avg/count;
 	}
 
-	private List<Review> getUserReviews(String user_ID) {
+	public List<Review> getUserReviews(String user_ID) {
 		List<Review> Reviews = new ArrayList<Review>();
 		for (Review review : reviews) {
 			if (user_ID.equals(review.getUserID())) {
