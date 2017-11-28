@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.StringReader;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.json.*;
 import javax.json.Json;
@@ -105,6 +107,13 @@ public class JsonTest {
 		System.out.println(tester.getNumStars());
 		System.out.println(tester.getUserID());
 		System.out.println(tester.getDate());
+	}
+	
+	@Test
+	public void test4() throws IOException {
+		YelpDB yelped = new YelpDB("data/restaurants.json", "data/reviews.json", "data/users.json");
+		List<Review> restaurants = yelped.getUserReviews("cywLfetwd4k7gSu5ewNuhw");
+		System.out.println(restaurants.size());
 	}
 
 }

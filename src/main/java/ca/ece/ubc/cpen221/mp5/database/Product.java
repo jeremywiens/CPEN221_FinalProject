@@ -1,12 +1,9 @@
 package ca.ece.ubc.cpen221.mp5.database;
 
 
-public class Product<T> {
+public class Product {
 	
-	
-	
-	public Product(T t) {
-		
+	public Product(String fileName) {
 	}
 
 }

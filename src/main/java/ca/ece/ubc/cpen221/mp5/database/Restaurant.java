@@ -13,7 +13,7 @@ import javax.json.stream.JsonParser;
 import javax.json.stream.JsonParser.Event;
 import javax.json.stream.JsonParserFactory;
 
-public class Restaurant {
+public class Restaurant /*extends Product*/{
 
 	private int review_count;
 	private String photo_url;
