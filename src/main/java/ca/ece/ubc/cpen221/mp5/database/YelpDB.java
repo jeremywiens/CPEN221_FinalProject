@@ -6,6 +6,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.ToDoubleBiFunction;
 
+import javax.json.Json;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObject;
+import javax.json.stream.JsonParser;
+import javax.json.stream.JsonParser.Event;
+
 import ca.ece.ubc.cpen221.mp5.learning.KMeans;
 
 import java.io.*;
@@ -16,6 +22,10 @@ public class YelpDB implements MP5Db {
 	private List<Restaurant> restaurants;
 	private List<Review> reviews;
 	private List<User> users;
+	private int count = 0;
+	private List<String> usernames = new ArrayList<String>();
+	private List<String> user_IDs = new ArrayList<String>();
+	private List<String> business_IDs = new ArrayList<String>();
 
 	// Maybe we should change the order so users are created first? Then every new
 	// review object can be added to the user who wrote it?
@@ -23,6 +33,13 @@ public class YelpDB implements MP5Db {
 		restaurants = ParseJSON.ParseRestaurant(restaurants_file);
 		reviews = ParseJSON.ParseReview(reviews_file);
 		users = ParseJSON.ParseUser(users_file);
+		for (User user:users) {
+			usernames.add(user.getName());
+			user_IDs.add(user.getUserID());
+		}
+		for (Restaurant business: restaurants) {
+			business_IDs.add(business.getBusinessID());
+		}
 	}
 
 	@Override
@@ -112,7 +129,8 @@ public class YelpDB implements MP5Db {
 		return Regression;
 	}
 
-	public List<Restaurant> getRestaurantReviews(String user_ID) {
+	public List<Restaurant> getRestaurantReviews(String user_ID) throws IllegalArgumentException {
+			
 		List<Restaurant> restaurants = new ArrayList<Restaurant>();
 
 		for (Review review : reviews) {
@@ -181,5 +199,146 @@ public class YelpDB implements MP5Db {
 
 		return sumMean;
 	}
+	
+	public Restaurant getRestaurant (String business_id) throws IllegalArgumentException {
+		Restaurant rest = null;
+		for (Restaurant restaurant : restaurants) {
+			rest = restaurant;
+			if (rest.getBusinessID().equals(business_id)) {
+				return rest;
+			}
+		}
+		throw new IllegalArgumentException();
+	}
+	
+	public String AddUser(String string) throws IllegalArgumentException {
+		String username = null;
+		JsonParser parser = Json.createParser(new StringReader(string));
+		String key = null;
+		String value = null;
+		while (parser.hasNext()) {
+			final Event event = parser.next();
+			switch (event) {
+			case KEY_NAME:
+				key = parser.getString();
+				break;
+			case VALUE_STRING:
+				if (key.equals("name")) {
+					username = parser.getString();
+				}
+				break;
+			case VALUE_NUMBER:
+				break;
+			case VALUE_TRUE:
+				break;
+			case VALUE_FALSE:
+				break;
+			}
+		}
+		parser.close();
+		if (username == null) {
+			throw new IllegalArgumentException();
+		}
+		
+		while (users.contains(username)) {
+			count++;
+		}
+		int userID = count;
+		
+		JsonObject Votes = Json.createObjectBuilder()
+				.add("funny", BigDecimal.valueOf(0))
+				.add("useful", BigDecimal.valueOf(0))
+				.add("cool", BigDecimal.valueOf(0)).build();
+		
+		JsonObject user = Json.createObjectBuilder()
+				.add("url", "http://www.yelp.com/user_details?userid=" + userID)
+				.add("votes", Votes)
+				.add("review_count", 0)
+				.add("type", "user")
+				.add("user_id", Integer.toString(userID))
+				.add("name", username)
+				.add("average_stars", BigDecimal.valueOf(0)).build();
+		
+		User newUser = new User(user.toString());
+		users.add(newUser);
+		user_IDs.add(newUser.getUserID());
+		count++;
+
+		return user.toString();
+	}
+	
+	public String AddRestaurant(String string) throws IllegalArgumentException {
+		try {
+			Restaurant newRestaurant = new Restaurant (string);
+			restaurants.add(newRestaurant);
+			business_IDs.add(newRestaurant.getBusinessID());
+			
+			JsonArrayBuilder neighborhood = Json.createArrayBuilder();
+			JsonArrayBuilder categories = Json.createArrayBuilder();
+			JsonArrayBuilder schools = Json.createArrayBuilder();
+			
+			for (String str : newRestaurant.getNeighborhoods()) {
+				neighborhood.add(str);
+			}
+			
+			for (String str : newRestaurant.getCategories()) {
+				categories.add(str);
+			}
+			
+			for (String str : newRestaurant.getSchools()) {
+				schools.add(str);
+			}
+			
+			JsonObject rest = Json.createObjectBuilder()
+					.add("open", newRestaurant.getOpen())
+					.add("url", newRestaurant.getUrl())
+					.add("longitude", newRestaurant.getLongitude())
+					.add("neighborhoods", neighborhood)
+					.add("business_id", newRestaurant.getBusinessID())
+					.add("name", newRestaurant.getName())
+					.add("categories", categories)
+					.add("state", newRestaurant.getState())
+					.add("stars", newRestaurant.getStars())
+					.add("city", newRestaurant.getCity())
+					.add("full_address", newRestaurant.getAddress())
+					.add("review_count", 0)
+					.add("photo_url", newRestaurant.getPhotoURL())
+					.add("schools", schools)
+					.add("latitude", newRestaurant.getLatitude())
+					.add("price", newRestaurant.getPrice())
+					.add("type", newRestaurant.getType()).build();
+
+			return rest.toString();
+		}
+		catch (Exception e) {
+			throw new IllegalArgumentException();
+		}
+	}
+	
+	public String AddReview(String string) {//assume don't have to pass votes, text or date
+		Review newReview = new Review(string);
+		if (!business_IDs.contains(newReview.getBusinessID())) {
+			throw new IllegalArgumentException();//should change this to a specific exception
+		} else if (!user_IDs.contains(newReview.getUserID())) {
+			throw new IllegalArgumentException(); //should change this too
+		}
+		JsonObject votes = Json.createObjectBuilder()
+				.add("cool", newReview.getCoolVotes())
+				.add("useful", newReview.getUsefulVotes())
+				.add("funny", newReview.getFunnyVotes()).build();
+		
+		JsonObject rev = Json.createObjectBuilder()
+				.add("type", newReview.getType())
+				.add("business_id", newReview.getBusinessID())
+				.add("votes", votes)
+				.add("review_id", newReview.getReviewID())
+				.add("text", newReview.getText())
+				.add("stars", newReview.getNumStars())
+				.add("user_id", newReview.getBusinessID())
+				.add("date", newReview.getDate()).build();
+		
+		return rev.toString();
+	}
+	
 
 }

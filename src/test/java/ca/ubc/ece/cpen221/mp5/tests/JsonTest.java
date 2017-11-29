@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.json.*;
@@ -114,6 +116,42 @@ public class JsonTest {
 		YelpDB yelped = new YelpDB("data/restaurants.json", "data/reviews.json", "data/users.json");
 		List<Review> restaurants = yelped.getUserReviews("cywLfetwd4k7gSu5ewNuhw");
 		System.out.println(restaurants.size());
+	}
+	
+	@Test
+	public void test5() throws IOException {
+		JsonObject votes = Json.createObjectBuilder()
+				.add("funny", 0).build();
+		List<String> arr = new ArrayList<String>();
+		arr.add("hello");
+		arr.add("yo");
+		arr.add("three");
+		JsonArrayBuilder neighborhood = Json.createArrayBuilder();
+		for(String string : arr) {
+			neighborhood.add(string);
+		}
+		
+		JsonObject json = Json.createObjectBuilder()
+			     .add("name", "Falco")
+			     .add("age", BigDecimal.valueOf(3))
+			     .add("neighbourhood", neighborhood)
+			     .add("biteable", Boolean.FALSE).build();
+			   String result = json.toString();
+			   System.out.println(result);
+	}
+	
+	@Test
+	public void test6() throws IOException {
+		YelpDB hello = new YelpDB("data/restaurants.json", "data/reviews.json", "data/users.json");
+		Restaurant tester = new Restaurant("{\"open\": true, \"url\": \"http://www.yelp.com/biz/cafe-3-berkeley\", \"longitude\": -122.260408, \"neighborhoods\": [\"Telegraph Ave\", \"UC Campus Area\"], \"business_id\": \"gclB3ED6uk6viWlolSb_uA\", \"name\": \"Cafe 3\", \"categories\": [\"Cafes\", \"Restaurants\"], \"state\": \"CA\", \"type\": \"business\", \"stars\": 2.0, \"city\": \"Berkeley\", \"full_address\": \"2400 Durant Ave\\nTelegraph Ave\\nBerkeley, CA 94701\", \"review_count\": 9, \"photo_url\": \"http://s3-media1.ak.yelpcdn.com/bphoto/AaHq1UzXiT6zDBUYrJ2NKA/ms.jpg\", \"schools\": [\"University of California at Berkeley\"], \"latitude\": 37.867417, \"price\": 1}");
+		System.out.println(hello.AddRestaurant("{\"open\": true, \"url\": \"http://www.yelp.com/biz/cafe-3-berkeley\", \"longitude\": -122.260408, \"neighborhoods\": [\"Telegraph Ave\", \"UC Campus Area\"], \"business_id\": \"yolo\", \"name\": \"Cafe 3\", \"categories\": [\"Cafes\", \"Restaurants\"], \"state\": \"CA\", \"type\": \"business\", \"city\": \"Berkeley\", \"full_address\": \"2400 Durant Ave\\nTelegraph Ave\\nBerkeley, CA 94701\", \"photo_url\": \"http://s3-media1.ak.yelpcdn.com/bphoto/AaHq1UzXiT6zDBUYrJ2NKA/ms.jpg\", \"schools\": [\"University of California at Berkeley\"], \"latitude\": 37.867417, \"price\": 1}"));
+		System.out.println(hello.AddUser("{\"url\": \"http://www.yelp.com/user_details?userid=_NH7Cpq3qZkByP5xR4gXog\", \"votes\": {\"funny\": 35, \"useful\": 21, \"cool\": 14}, \"review_count\": 29, \"type\": \"user\", \"user_id\": \"_NH7Cpq3qZkByP5xR4gXog\", \"name\": \"Chris M.\", \"average_stars\": 3.89655172413793}"));
+		System.out.println(hello.AddUser("{\"url\": \"http://www.yelp.com/user_details?userid=_NH7Cpq3qZkByP5xR4gXog\", \"votes\": {\"funny\": 35, \"useful\": 21, \"cool\": 14}, \"review_count\": 29, \"type\": \"user\", \"user_id\": \"_NH7Cpq3qZkByP5xR4gXog\", \"name\": \"Chris M.\", \"average_stars\": 3.89655172413793}"));
+		System.out.println(hello.AddReview("{\"type\": \"review\", \"business_id\": \"1CBs84C-a-cuA3vncXVSAw\", \"review_id\": \"bigD\", \"stars\": 2, \"user_id\": \"90wm_01FAIqhcgV_mPON9Q\", \"date\": \"2006-07-26\"}"));
+	}
+	
+	@Test
+	public void test7() throws IOException {
 	}
 
 }

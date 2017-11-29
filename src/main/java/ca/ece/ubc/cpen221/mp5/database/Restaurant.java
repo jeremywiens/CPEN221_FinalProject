@@ -15,28 +15,27 @@ import javax.json.stream.JsonParserFactory;
 
 public class Restaurant /*extends Product*/{
 
-	private int review_count;
-	private String photo_url;
-	private String state;
-	private String full_address;
-	private String type;
-	private String url;
-	private String city;
+	private int review_count = 0;
+	private String photo_url = null;
+	private String state = null;
+	private String full_address = null;
+	private String type = null;
+	private String url = null;
+	private String city = null;
 	private Boolean open;
 	private ArrayList<String> neighborhoods = new ArrayList<String>();
 	private int price;
 	private ArrayList<String> schools = new ArrayList<String>();
-	private BigDecimal stars;
-	private String name;
-	private String business_id;
-	private BigDecimal longitude;
+	private int stars = 0;
+	private String name = null;
+	private String business_id = null;
+	private BigDecimal longitude = null;
 	private List<String> categories = new ArrayList<String>();
-	private BigDecimal latitude;
+	private BigDecimal latitude = null;
 
 	public Restaurant(String Restaurant) {
 		JsonParser parser = Json.createParser(new StringReader(Restaurant));
 	    String key = null;
-	    String value = null;
 	    while (parser.hasNext()) {
 	         final Event event = parser.next();
 	         switch (event) {
@@ -59,7 +58,7 @@ public class Restaurant /*extends Product*/{
 	            	if (key.equals("categories")) {
 	            		this.categories.add(parser.getString());
 	            	}
-	            	if (key.equals("State")) {
+	            	if (key.equals("state")) {
 	            		this.state = parser.getString();
 	            	}
 	            	if (key.equals("type")) {
@@ -89,7 +88,7 @@ public class Restaurant /*extends Product*/{
 	            		this.review_count = parser.getInt();
 	            	}
 	            	if (key.equals("stars")) {
-	            		this.stars = parser.getBigDecimal();
+	            		this.stars = parser.getInt();
 	            	}
 	            	if (key.equals("longitude")) {
 	            		this.longitude = parser.getBigDecimal();
@@ -108,6 +107,20 @@ public class Restaurant /*extends Product*/{
 	            }
 	        }
 	        parser.close();
+	       // System.out.println(business_id + categories + city + full_address);
+	        if (notNull(this.business_id, this.categories, this.city, this.full_address, this.latitude, this.longitude, this.name, this.neighborhoods, this.categories, this.schools, this.url, this.type, this.photo_url, this.state)) {
+	        	throw new IllegalArgumentException();
+	        }
+	}
+	
+	private boolean notNull(Object... args) {
+	    for (Object arg : args) {
+	        if (arg != null) {
+	            return false;
+	        }
+	        else {System.out.println("hello");}
+	    }
+	    return true;
 	}
 
 	public Boolean getOpen() {
@@ -150,7 +163,7 @@ public class Restaurant /*extends Product*/{
 		return this.type;
 	}
 
-	public BigDecimal getStars() {
+	public int getStars() {
 		return this.stars;
 	}
 
