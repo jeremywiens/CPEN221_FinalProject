@@ -26,7 +26,7 @@ public class YelpDBClient {
 	public YelpDBClient(String hostname, int port) throws IOException {
 		socket = new Socket(hostname, port);
 		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-		out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
+		out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream())); 
 	}
 
 	/**
@@ -97,7 +97,7 @@ public class YelpDBClient {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			System.exit(0);
-		}
+		} 
 
 		try {
 			YelpDBClient client = new YelpDBClient("localhost", YelpDBServer.port);

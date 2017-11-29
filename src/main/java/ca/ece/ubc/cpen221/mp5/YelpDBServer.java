@@ -4,7 +4,7 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
-
+import javax.json.Json;
 import ca.ece.ubc.cpen221.mp5.database.YelpDB;
 
 /**
@@ -19,7 +19,7 @@ public class YelpDBServer {
 	// Rep invariant: serverSocket != null
 	//
 	// Thread safety argument:
-	// TODO serverSocket
+	// TODO serverSocket 
 	// TODO socket objects
 	// TODO readers and writers in handle()
 	// TODO data in handle()
@@ -88,7 +88,7 @@ public class YelpDBServer {
 		// that we have more convenient ways to write Java primitive
 		// types to it.
 		PrintWriter out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()), true);
-
+		String response = "";
 		try {
 			// each request is a single line containing a number
 			for (String line = in.readLine(); line != null; line = in.readLine()) {
@@ -98,19 +98,27 @@ public class YelpDBServer {
 					String command = newArgs[0];
 					
 					if(command.trim().toUpperCase().equals("GETRESTAURANT")) {
-	//					thisYelp.GetRestaurant(line.substring(13, line.length()).trim());
+						thisYelp.getRestaurant(line.substring(13, line.length()).trim());
+						//make string return first
 					}
 					else if(command.trim().toUpperCase().equals("ADDUSER")) {
-			//			thisYelp.AddUser(line.substring(7, line.length()).trim());
+						response += thisYelp.AddUser(line.substring(7, line.length()).trim());
+						System.err.println("reply: " + response);
+						out.println(response);
 					}
 					else if(command.trim().toUpperCase().equals("ADDRESTAURANT")) {
-			//			thisYelp.AddRestaurant(line.substring(13, line.length()).trim());
+						response += thisYelp.AddRestaurant(line.substring(13, line.length()).trim());
+						System.err.println("reply: " + response);
+						out.println(response);
 					}
 					else if(command.trim().toUpperCase().equals("ADDREVIEW")) {
-			//			thisYelp.AddReview(line.substring(9, line.length()).trim());
+						response += thisYelp.AddReview(line.substring(9, line.length()).trim());
+						System.err.println("reply: " + response);
+						out.println(response);
 					}
 					else {
 						System.err.println("ERR: ILLEGAL_REQUEST");
+						out.print("err: ILLEGAL_REQUEST\n");
 					}
 				} catch (Exception e) {
 					// complain about ill-formatted request
