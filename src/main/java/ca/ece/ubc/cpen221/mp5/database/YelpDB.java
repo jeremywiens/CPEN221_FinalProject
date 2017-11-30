@@ -24,7 +24,7 @@ import java.math.BigDecimal;
  * algorithms can be performed on this database.
  *
  */
-public class YelpDB implements MP5Db<Restaurant> {
+public class YelpDB extends MP5AbstractDb<Restaurant> {
 
 	// Abstraction function: YelpDB exists as three lists. Restaurants which is an
 	// object specifically for YelpDB. Users and reviews are objects which exist
@@ -90,10 +90,6 @@ public class YelpDB implements MP5Db<Restaurant> {
 	 */
 	public YelpDB(String restaurants_file, String reviews_file, String users_file) throws IOException {
 
-		restaurants = ParseJSON.ParseRestaurant(restaurants_file);
-		reviews = ParseJSON.ParseReview(reviews_file);
-		users = ParseJSON.ParseUser(users_file);
-
 		try {
 			restaurants = ParseJSON.ParseRestaurant(restaurants_file);
 		} catch (Exception e) {
@@ -120,11 +116,11 @@ public class YelpDB implements MP5Db<Restaurant> {
 		}
 	}
 
-	@Override
+/*	@Override
 	public Set getMatches(String queryString) {
 		// TODO Auto-generated method stub
 		return null;
-	}
+	}*/
 
 	/**
 	 * kMeansClusters_json performs the KMeans clustering algorithm on the current

@@ -9,6 +9,9 @@ import ca.ece.ubc.cpen221.mp5.YelpDBServer;
 
 /**
  * No clue what is going on;
+ * 
+ *  * Source: The Skeleton for this code is from the CPEN 221 course website. The
+ * github repo can be found at https://github.com/CPEN-221/FibonacciServer
  */
 public class YelpDBClient {
 	private Socket socket;
