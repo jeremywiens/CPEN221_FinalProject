@@ -11,7 +11,38 @@ import java.net.Socket;
 import ca.ece.ubc.cpen221.mp5.database.YelpDB;
 
 /**
-*
+ * YelpDBServer - is a server that allows a client to access the Yelp database.
+ * YelpDBServer can handle multiple concurrent clients. A client can get
+ * restaurant information with the proper command followed by its business ID.
+ * Ex:
+ * 
+ * <GETRESTAURANT> <h_we4E3zofRTf4G0JTEF0A>
+ * 
+ * A client can add a user, restaurant, or review and will be returned the
+ * information in JSON format. Add users, restaurants, or reviews with the
+ * following commands:
+ * 
+ * <ADDUSER> (the following is example) <{"name": "Sathish G."}> More
+ * information can be provided such as user_Id however an error will be thrown
+ * if this ID already exists within the database. If the argument to the ADDUSER
+ * command is invalid (not JSON format, missing name, etc.) the message ERR:
+ * INVALID_USER_STRING will be returned.
+ * 
+ * <ADDRESTAURANT> <restaurant information> The restaurant information must
+ * include (in JSON format) "open", "url", "longitude", "latitude",
+ * "neighborhoods", "name", "categories", "state", "type", "city",
+ * "full_address", "photo_url", "schools", "latitude", and "price". Everything
+ * except "stars" "business_ID", and "review_count" If the provided string is
+ * incomplete or erroneous , the error message will be ERR:
+ * INVALID_RESTAURANT_STRING.
+ * 
+ * <ADDREVIEW> <review information> The review information that must be included
+ * is "business_id", "stars", and "user_id" The possible error codes are ERR:
+ * INVALID_REVIEW_STRING, ERR: NO_SUCH_USER and ERR: NO_SUCH_RESTAURANT.
+ * 
+ * An example of the returned JSON string for ADDUSER is {"url":
+ * "http://www.yelp.com/user_details?userid=42", "votes": {}, "review_count": 0,
+ * "type": "user", "user_id": "42", "name": "Sathish G.", "average_stars": 0}
  */
 public class YelpDBServer {
 
@@ -24,7 +55,7 @@ public class YelpDBServer {
 	// TODO serverSocket
 	// TODO socket objects
 	// TODO readers and writers in handle()
-	// TODO data in handle()
+	// TODO data in handle
 
 	/**
 	 * Make a YelpDBServer that listens for connections on port.
@@ -135,7 +166,7 @@ public class YelpDBServer {
 	}
 
 	/**
-	 * Start a Server running on the port #.
+	 * Start a Server running on the port # given in the args
 	 */
 	public static void main(String[] args) {
 		int port = 0;
