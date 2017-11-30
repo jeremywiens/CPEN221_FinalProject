@@ -21,7 +21,7 @@ import java.math.BigDecimal;
  * YelpDB - This is a database of information found on YelpDB. This implements
  * MP5Db but is used with Restaurants as the product which are reviewed. This
  * database exists as a list of restaurants, reviews and users. Various
- * algorithms can be preformed on this database.
+ * algorithms can be performed on this database.
  *
  */
 public class YelpDB implements MP5Db<Restaurant> {
@@ -305,101 +305,40 @@ public class YelpDB implements MP5Db<Restaurant> {
 		return sumMean;
 	}
 
-	public Restaurant getRestaurant(String business_id) throws IllegalArgumentException {
+	public String getRestaurant(String business_id) throws IllegalArgumentException {
 		Restaurant rest = null;
 		for (Restaurant restaurant : restaurants) {
 			rest = restaurant;
 			if (rest.getBusinessID().equals(business_id)) {
-				return rest;
+				return rest.toString();
 			}
 		}
 		throw new IllegalArgumentException();
 	}
 
 	public String AddUser(String string) throws IllegalArgumentException {
-		String username = null;
-		JsonParser parser = Json.createParser(new StringReader(string));
-		String key = null;
-		String value = null;
-		while (parser.hasNext()) {
-			final Event event = parser.next();
-			switch (event) {
-			case KEY_NAME:
-				key = parser.getString();
-				break;
-			case VALUE_STRING:
-				if (key.equals("name")) {
-					username = parser.getString();
-				}
-				break;
-			case VALUE_NUMBER:
-				break;
-			case VALUE_TRUE:
-				break;
-			case VALUE_FALSE:
-				break;
-			}
-		}
-		parser.close();
-		if (username == null) {
+		User newUser = new User(string);
+		String ID = newUser.getUserID();
+		if (user_IDs.contains(ID)) {
 			throw new IllegalArgumentException();
 		}
-
-		while (users.contains(username)) {
-			count++;
-		}
-		int userID = count;
-
-		JsonObject Votes = Json.createObjectBuilder().add("funny", BigDecimal.valueOf(0))
-				.add("useful", BigDecimal.valueOf(0)).add("cool", BigDecimal.valueOf(0)).build();
-
-		JsonObject user = Json.createObjectBuilder().add("url", "http://www.yelp.com/user_details?userid=" + userID)
-				.add("votes", Votes).add("review_count", 0).add("type", "user").add("user_id", Integer.toString(userID))
-				.add("name", username).add("average_stars", BigDecimal.valueOf(0)).build();
-
-		User newUser = new User(user.toString());
 		users.add(newUser);
 		user_IDs.add(newUser.getUserID());
-		count++;
-
-		return user.toString();
+		return newUser.toString();
 	}
 
 	public String AddRestaurant(String string) throws IllegalArgumentException {
 		try {
 			Restaurant newRestaurant = new Restaurant(string);
+			if (business_IDs.contains(newRestaurant.getBusinessID())) {
+				throw new IllegalArgumentException(); //change this
+			}
 			restaurants.add(newRestaurant);
 			business_IDs.add(newRestaurant.getBusinessID());
 
-			JsonArrayBuilder neighborhood = Json.createArrayBuilder();
-			JsonArrayBuilder categories = Json.createArrayBuilder();
-			JsonArrayBuilder schools = Json.createArrayBuilder();
-
-			for (String str : newRestaurant.getNeighborhoods()) {
-				neighborhood.add(str);
-			}
-
-			for (String str : newRestaurant.getCategories()) {
-				categories.add(str);
-			}
-
-			for (String str : newRestaurant.getSchools()) {
-				schools.add(str);
-			}
-
-			JsonObject rest = Json.createObjectBuilder().add("open", newRestaurant.getOpen())
-					.add("url", newRestaurant.getUrl()).add("longitude", newRestaurant.getLongitude())
-					.add("neighborhoods", neighborhood).add("business_id", newRestaurant.getBusinessID())
-					.add("name", newRestaurant.getName()).add("categories", categories)
-					.add("state", newRestaurant.getState()).add("stars", newRestaurant.getStars())
-					.add("city", newRestaurant.getCity()).add("full_address", newRestaurant.getAddress())
-					.add("review_count", 0).add("photo_url", newRestaurant.getPhotoURL()).add("schools", schools)
-					.add("latitude", newRestaurant.getLatitude()).add("price", newRestaurant.getPrice())
-					.add("type", newRestaurant.getType()).build();
-
-			return rest.toString();
+			return newRestaurant.toString();
 		} catch (Exception e) {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException(); //should change this
 		}
 	}
 
@@ -410,16 +349,8 @@ public class YelpDB implements MP5Db<Restaurant> {
 		} else if (!user_IDs.contains(newReview.getUserID())) {
 			throw new IllegalArgumentException(); // should change this too
 		}
-		JsonObject votes = Json.createObjectBuilder().add("cool", newReview.getCoolVotes())
-				.add("useful", newReview.getUsefulVotes()).add("funny", newReview.getFunnyVotes()).build();
 
-		JsonObject rev = Json.createObjectBuilder().add("type", newReview.getType())
-				.add("business_id", newReview.getBusinessID()).add("votes", votes)
-				.add("review_id", newReview.getReviewID()).add("text", newReview.getText())
-				.add("stars", newReview.getNumStars()).add("user_id", newReview.getBusinessID())
-				.add("date", newReview.getDate()).build();
-
-		return rev.toString();
+		return newReview.toString();
 	}
 
 }

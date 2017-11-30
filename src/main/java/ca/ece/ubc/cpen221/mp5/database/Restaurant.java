@@ -1,19 +1,14 @@
 package ca.ece.ubc.cpen221.mp5.database;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+
 import java.io.StringReader;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.json.*;
 import javax.json.stream.JsonParser;
 import javax.json.stream.JsonParser.Event;
-import javax.json.stream.JsonParserFactory;
-
 public class Restaurant /* extends Product */ {
 
 	private int review_count = 0;
@@ -108,7 +103,6 @@ public class Restaurant /* extends Product */ {
 			}
 		}
 		parser.close();
-		// System.out.println(business_id + categories + city + full_address);
 		if (notNull(this.business_id, this.categories, this.city, this.full_address, this.latitude, this.longitude,
 				this.name, this.neighborhoods, this.categories, this.schools, this.url, this.type, this.photo_url,
 				this.state)) {
@@ -193,6 +187,46 @@ public class Restaurant /* extends Product */ {
 
 	public List<String> getSchools() {
 		return this.schools;
+	}
+	
+	@Override
+	public String toString() {
+		JsonArrayBuilder Neighborhood = Json.createArrayBuilder();
+		JsonArrayBuilder Categories = Json.createArrayBuilder();
+		JsonArrayBuilder Schools = Json.createArrayBuilder();
+
+		for (String str : this.neighborhoods) {
+			Neighborhood.add(str);
+		}
+
+		for (String str : this.categories) {
+			Categories.add(str);
+		}
+
+		for (String str : this.schools) {
+			Schools.add(str);
+		}
+
+		JsonObject rest = Json.createObjectBuilder()
+				.add("open", this.open)
+				.add("url", this.url)
+				.add("longitude", this.longitude)
+				.add("neighborhoods", Neighborhood)
+				.add("business_id", this.business_id)
+				.add("name", this.name)
+				.add("categories", Categories)
+				.add("state", this.state)
+				.add("stars", this.stars)
+				.add("city", this.city)
+				.add("full_address", this.full_address)
+				.add("review_count", this.review_count)
+				.add("photo_url", this.photo_url)
+				.add("schools", Schools)
+				.add("latitude", this.latitude)
+				.add("price", this.price)
+				.add("type", this.type).build();
+
+		return rest.toString();
 	}
 
 }

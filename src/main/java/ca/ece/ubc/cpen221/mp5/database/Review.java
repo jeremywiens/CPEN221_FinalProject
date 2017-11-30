@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.json.Json;
+import javax.json.JsonObject;
 import javax.json.stream.JsonParser;
 import javax.json.stream.JsonParser.Event;
 
@@ -79,11 +80,6 @@ public class Review {
 			}
 		}
 		parser.close();
-		if (reviewIDs.contains(this.review_id)) {
-			throw new IllegalArgumentException(); //change this too
-		} else {
-			reviewIDs.add(this.review_id);
-		}
 
 		if (this.text == null) {
 			text = "";		
@@ -150,6 +146,26 @@ public class Review {
 
 	public String getDate() {
 		return this.date;
+	}
+	
+	@Override
+	public String toString() {
+		JsonObject Votes = Json.createObjectBuilder()
+				.add("cool", this.getCoolVotes())
+				.add("useful", this.getUsefulVotes())
+				.add("funny", this.getFunnyVotes()).build();
+
+		JsonObject rev = Json.createObjectBuilder()
+				.add("type", this.type)
+				.add("business_id", this.business_id)
+				.add("votes", Votes)
+				.add("review_id", this.review_id)
+				.add("text", this.text)
+				.add("stars", this.stars)
+				.add("user_id", this.user_id)
+				.add("date", this.date).build();
+		
+		return rev.toString();
 	}
 
 }
