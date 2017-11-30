@@ -19,7 +19,7 @@ public class YelpDBServer {
 	// Rep invariant: serverSocket != null
 	//
 	// Thread safety argument:
-	// TODO serverSocket 
+	// TODO serverSocket
 	// TODO socket objects
 	// TODO readers and writers in handle()
 	// TODO data in handle()
@@ -96,27 +96,23 @@ public class YelpDBServer {
 				String[] newArgs = line.split(" ");
 				try {
 					String command = newArgs[0];
-					
-					if(command.trim().toUpperCase().equals("GETRESTAURANT")) {
+
+					if (command.trim().toUpperCase().equals("GETRESTAURANT")) {
 						thisYelp.getRestaurant(line.substring(13, line.length()).trim());
-						//make string return first
-					}
-					else if(command.trim().toUpperCase().equals("ADDUSER")) {
+						// make string return first
+					} else if (command.trim().toUpperCase().equals("ADDUSER")) {
 						response += thisYelp.AddUser(line.substring(7, line.length()).trim());
 						System.err.println("reply: " + response);
 						out.println(response);
-					}
-					else if(command.trim().toUpperCase().equals("ADDRESTAURANT")) {
+					} else if (command.trim().toUpperCase().equals("ADDRESTAURANT")) {
 						response += thisYelp.AddRestaurant(line.substring(13, line.length()).trim());
 						System.err.println("reply: " + response);
 						out.println(response);
-					}
-					else if(command.trim().toUpperCase().equals("ADDREVIEW")) {
+					} else if (command.trim().toUpperCase().equals("ADDREVIEW")) {
 						response += thisYelp.AddReview(line.substring(9, line.length()).trim());
 						System.err.println("reply: " + response);
 						out.println(response);
-					}
-					else {
+					} else {
 						System.err.println("ERR: ILLEGAL_REQUEST");
 						out.print("err: ILLEGAL_REQUEST\n");
 					}
@@ -139,9 +135,10 @@ public class YelpDBServer {
 	 * Start a Server running on the port #.
 	 */
 	public static void main(String[] args) {
-		port = 0;
-		try {
-			port = Integer.parseInt(args[0]);
+		port = 4949;
+/*		try {
+			if (args[0] != null)
+				port = Integer.parseInt(args[0]);
 			// requires 0 <= port <= 65535
 			if (port < 0 || port > 65535) {
 				System.out.println("requires 0 <= port <= 65535");
@@ -151,7 +148,7 @@ public class YelpDBServer {
 			System.out.println(e.getMessage());
 			System.exit(0);
 		}
-
+*/
 		try {
 			YelpDBServer server = new YelpDBServer(port);
 			server.serve();
