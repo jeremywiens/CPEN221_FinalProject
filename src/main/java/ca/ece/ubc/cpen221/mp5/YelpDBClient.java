@@ -82,8 +82,8 @@ public class YelpDBClient {
 	 * Use a FibonacciServer to find the first N Fibonacci numbers.
 	 */
 	public static void main(String[] args) {
-		int port = 0;
-		try {
+		int port = 4949;
+/*		try {
 			port = Integer.parseInt(args[0]);
 			// requires 0 <= port <= 65535
 			if (port < 0 || port > 65535) {
@@ -97,13 +97,14 @@ public class YelpDBClient {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			System.exit(0);
-		} 
+		} */
 
 		try {
-			YelpDBClient client = new YelpDBClient("localhost", YelpDBServer.port);
+			YelpDBClient client = new YelpDBClient("localhost", port);
 			// users need just a name, cant have duplicate id
 			// restaurants need latitude, longtitude, and name, cant have duplicate id
 			// reviews need busniess id, user id, and stars
+			System.out.println("connected");
 			Scanner scanner = new Scanner(System.in);
 			String line = scanner.nextLine();
 			// GETRESTAURANT h_we4E3zofRTf4G0JTEF0A
