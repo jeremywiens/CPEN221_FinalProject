@@ -14,12 +14,12 @@ public class User {
 
 	private int review_count;
 	private String name;
-	private HashMap votes = new HashMap<String, Integer>();
-	private String user_id;
+	private HashMap<String, Integer> votes = new HashMap<String, Integer>();
+	private String user_id = null;
 	private List<String> userIDs = new ArrayList<String>();
-	private String type;
-	private String url;
-	private BigDecimal average_stars;
+	private String type = null;
+	private String url = null;
+	private double average_stars = 0.0;
 	private int count = 0;
 
 	public User(String User) {
@@ -40,7 +40,6 @@ public class User {
 				}
 				if (key.equals("user_id")) {
 					this.user_id = parser.getString();
-					userIDs.add(this.user_id);
 				}
 				if (key.equals("name")) {
 					this.name = parser.getString();
@@ -63,7 +62,7 @@ public class User {
 					this.review_count = parser.getInt();
 				}
 				if (key.equals("average_stars")) {
-					this.average_stars = parser.getBigDecimal();
+					this.average_stars = parser.getBigDecimal().doubleValue();
 				}
 				break;
 			case VALUE_TRUE:
@@ -73,13 +72,39 @@ public class User {
 			}
 		}
 		parser.close();
+		System.out.println(userIDs);
+		System.out.println(user_id);
+		if (name == null) {
+			throw new IllegalArgumentException();
+		}
+		if (votes.isEmpty()) {
+			votes.put("funny", 0);
+			votes.put("useful", 0);
+			votes.put("cool", 0);
+		}
+		while (userIDs.contains(user_id) || user_id == null) {
+			System.out.println("this is the user_id:" + this.user_id);
+			count++;
+			int a = count;
+			this. user_id = Integer.toString(a);
+		}
+		if (type == null) {
+			type = "user";
+		}
+		if (url == null) {
+			url = "http://www.yelp.com/user_details?userid=" + user_id;
+		}
+	}
+	
+	private void addID() {
+		userIDs.add(user_id);
 	}
 
 	public String getUrl() {
 		return this.url;
 	}
 
-	public HashMap getVotes() {
+	public HashMap<String, Integer> getVotes() {
 		return this.votes;
 	}
 
@@ -111,9 +136,25 @@ public class User {
 		return this.name;
 	}
 
-	public BigDecimal getAvgStars() {
+	public double getAvgStars() {
 		return this.average_stars;
 	}
+	
+	@Override
+	public String toString() {
+		JsonObject Votes = Json.createObjectBuilder()
+				.add("funny", this.getFunnyVotes())
+				.add("useful", this.getUsefulVotes())
+				.add("cool", this.getCoolVotes()).build();
 
-
+		JsonObject user = Json.createObjectBuilder()
+				.add("url", this.url)
+				.add("votes", Votes)
+				.add("review_count", 0)
+				.add("type", "user")
+				.add("user_id", this.user_id)
+				.add("name", this.name)
+				.add("average_stars", this.average_stars).build();
+		return user.toString();
+	}
 }
