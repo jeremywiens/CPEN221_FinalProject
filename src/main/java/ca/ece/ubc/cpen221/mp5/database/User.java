@@ -72,8 +72,6 @@ public class User {
 			}
 		}
 		parser.close();
-		System.out.println(userIDs);
-		System.out.println(user_id);
 		if (name == null) {
 			throw new IllegalArgumentException();
 		}
@@ -83,7 +81,6 @@ public class User {
 			votes.put("cool", 0);
 		}
 		while (userIDs.contains(user_id) || user_id == null) {
-			System.out.println("this is the user_id:" + this.user_id);
 			count++;
 			int a = count;
 			this. user_id = Integer.toString(a);
