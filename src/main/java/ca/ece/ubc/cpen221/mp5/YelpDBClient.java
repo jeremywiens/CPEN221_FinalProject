@@ -108,7 +108,7 @@ public class YelpDBClient {
 				if (line.trim().equals("close")) {
 					bools = false;
 				} else {
-					client.sendRequest(line.trim());
+					client.sendRequest(line.trim()); 
 
 					// collect the replies
 					String reply = client.getReply();
