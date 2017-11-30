@@ -65,7 +65,7 @@ public class kMeansTesting {
 	@Test
 	public void test1() throws IOException {
 		YelpDB hello = new YelpDB("data/restaurants.json", "data/reviews.json", "data/users.json");
-		hello.kMeansClusters_json(4);
+		System.out.println(hello.kMeansClusters_json(4));
 		// Read comment above
 		//I made a really cool test for this, also deleted, not making again.
 		// Print out result from string above, paste in json file and run python script.

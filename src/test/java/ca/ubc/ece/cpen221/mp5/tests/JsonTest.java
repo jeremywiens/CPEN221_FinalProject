@@ -44,7 +44,7 @@ public class JsonTest {
 		System.out.println(tester.getSchools());
 		System.out.println(tester.getPrice());
 		System.out.println(tester.getLatitude());
-	}
+	} 
 	
 	@Test
 	public void test1() throws IOException {

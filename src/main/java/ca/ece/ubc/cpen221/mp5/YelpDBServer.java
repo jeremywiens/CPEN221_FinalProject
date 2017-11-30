@@ -11,6 +11,9 @@ import java.net.Socket;
 import ca.ece.ubc.cpen221.mp5.database.YelpDB;
 
 /**
+ * Source: The Skeleton for this code is from the CPEN 221 course website. The
+ * github repo can be found at https://github.com/CPEN-221/FibonacciServer
+ * 
  * YelpDBServer - is a server that allows a client to access the Yelp database.
  * YelpDBServer can handle multiple concurrent clients. A client can get
  * restaurant information with the proper command followed by its business ID.
@@ -132,8 +135,9 @@ public class YelpDBServer {
 					String command = newArgs[0];
 
 					if (command.trim().toUpperCase().equals("GETRESTAURANT")) {
-						thisYelp.getRestaurant(line.substring(13, line.length()).trim());
-						// make string return first
+						response += thisYelp.getRestaurant(line.substring(13, line.length()).trim());
+						System.err.println("reply: " + response);
+						out.println(response); 
 					} else if (command.trim().toUpperCase().equals("ADDUSER")) {
 						response += thisYelp.AddUser(line.substring(7, line.length()).trim());
 						System.err.println("reply: " + response);
@@ -167,6 +171,7 @@ public class YelpDBServer {
 
 	/**
 	 * Start a Server running on the port # given in the args
+	 * @param args is the port, requires 0 <= port <= 65535.
 	 */
 	public static void main(String[] args) {
 		int port = 0;

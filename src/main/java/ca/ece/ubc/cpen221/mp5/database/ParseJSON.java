@@ -21,6 +21,7 @@ public class ParseJSON {
 	private static List<Restaurant> RestaurantList = new ArrayList<Restaurant>();
 	private static List<User> UserList = new ArrayList<User>();
 	private static List<Review> ReviewList = new ArrayList<Review>();
+	private static List<Business> BusinessList = new ArrayList<Business>();
 
 	/**
 	 * Parse a JSON file containing information about restaurants. A list of these
@@ -42,6 +43,28 @@ public class ParseJSON {
 				RestaurantList.add(thisRestaurant);
 			}
 			return RestaurantList;
+		}
+	}
+	/**
+	 * Parse a JSON file containing information about restaurants. A list of these
+	 * restaurants will be returned.
+	 * 
+	 * @param filename
+	 *            is the file name and appropriate directory which contains
+	 *            information about restaurants in a JSON format.
+	 * @return A complete list of restaurants based on the given file.
+	 * @throws IOException
+	 *             if the file cannot be read.
+	 */
+	public static List<Business> ParseBusiness(String filename) throws IOException {
+
+		try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
+			String line;
+			while ((line = br.readLine()) != null) {
+				Business thisBusiness = new Business(line);
+				BusinessList.add(thisBusiness);
+			}
+			return BusinessList;
 		}
 	}
 
