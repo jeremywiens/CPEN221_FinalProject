@@ -26,7 +26,7 @@ public class YelpDBClient {
 	public YelpDBClient(String hostname, int port) throws IOException {
 		socket = new Socket(hostname, port);
 		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-		out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream())); 
+		out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
 	}
 
 	/**
@@ -56,7 +56,7 @@ public class YelpDBClient {
 		}
 
 		try {
-			//return new BigInteger(reply);
+			// return new BigInteger(reply);
 		} catch (NumberFormatException nfe) {
 			throw new IOException("misformatted reply: " + reply);
 		}
@@ -82,22 +82,19 @@ public class YelpDBClient {
 	 * Use a FibonacciServer to find the first N Fibonacci numbers.
 	 */
 	public static void main(String[] args) {
-		int port = 4949;
-/*		try {
+		int port = 0;
+		boolean bools = true;
+		try {
 			port = Integer.parseInt(args[0]);
 			// requires 0 <= port <= 65535
 			if (port < 0 || port > 65535) {
 				System.out.println("requires 0 <= port <= 65535");
 				System.exit(0);
 			}
-			if (port != YelpDBServer.port) {
-				System.out.println("Invalid port, try: " + YelpDBServer.port);
-				System.exit(0);
-			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			System.exit(0);
-		} */
+		}
 
 		try {
 			YelpDBClient client = new YelpDBClient("localhost", port);
@@ -105,18 +102,19 @@ public class YelpDBClient {
 			// restaurants need latitude, longtitude, and name, cant have duplicate id
 			// reviews need busniess id, user id, and stars
 			System.out.println("connected");
-			Scanner scanner = new Scanner(System.in);
-			String line = scanner.nextLine();
-			// GETRESTAURANT h_we4E3zofRTf4G0JTEF0A
+			while (bools) {
+				Scanner scanner = new Scanner(System.in);
+				String line = scanner.nextLine();
+				if (line.trim().equals("close")) {
+					bools = false;
+				} else {
+					client.sendRequest(line.trim());
 
-			client.sendRequest(line.trim());
-			// System.out.println("fibonacci("+x+") = ?");
-			// }
-
-			// collect the replies
-			String reply = client.getReply();
-			System.out.println(reply);
-
+					// collect the replies
+					String reply = client.getReply();
+					System.out.println(reply);
+				}
+			}
 			client.close();
 		} catch (IOException ioe) {
 			ioe.printStackTrace();

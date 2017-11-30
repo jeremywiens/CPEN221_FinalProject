@@ -1,10 +1,13 @@
 package ca.ece.ubc.cpen221.mp5;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Scanner;
-import javax.json.Json;
+
 import ca.ece.ubc.cpen221.mp5.database.YelpDB;
 
 /**
@@ -14,7 +17,6 @@ public class YelpDBServer {
 
 	private ServerSocket serverSocket;
 	private YelpDB thisYelp;
-	protected static int port = 0;
 
 	// Rep invariant: serverSocket != null
 	//
@@ -94,6 +96,7 @@ public class YelpDBServer {
 			for (String line = in.readLine(); line != null; line = in.readLine()) {
 				System.err.println("request: " + line);
 				String[] newArgs = line.split(" ");
+				response = "";
 				try {
 					String command = newArgs[0];
 
@@ -135,8 +138,8 @@ public class YelpDBServer {
 	 * Start a Server running on the port #.
 	 */
 	public static void main(String[] args) {
-		port = 4949;
-/*		try {
+		int port = 0;
+		try {
 			if (args[0] != null)
 				port = Integer.parseInt(args[0]);
 			// requires 0 <= port <= 65535
@@ -148,7 +151,7 @@ public class YelpDBServer {
 			System.out.println(e.getMessage());
 			System.exit(0);
 		}
-*/
+		System.out.println(port);
 		try {
 			YelpDBServer server = new YelpDBServer(port);
 			server.serve();
