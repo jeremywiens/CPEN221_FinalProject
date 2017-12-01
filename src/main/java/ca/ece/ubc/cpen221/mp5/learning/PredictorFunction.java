@@ -6,6 +6,10 @@ import java.util.function.ToDoubleBiFunction;
 
 import ca.ece.ubc.cpen221.mp5.database.*;
 
+/**
+ * PredictorFunction
+ *
+ */
 public class PredictorFunction {
 
 	private List<Restaurant> restaurants = new ArrayList<Restaurant>();
