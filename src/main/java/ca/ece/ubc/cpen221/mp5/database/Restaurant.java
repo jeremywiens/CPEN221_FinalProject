@@ -41,13 +41,13 @@ public class Restaurant {
 	// must have a list of Strings representing the neighborhoods the Restaurant is located in and
 	// no string is null and the list is not empty
 	private ArrayList<String> neighborhoods = new ArrayList<String>();
-	// must have a price associated to it of type int and be greater than 0
-	private int price;
+	// must have a price associated to it of type int and be greater than 0 and less than 5
+	private int price = 0;
 	// must have a list of Strings representing the schools the Restaurant is located in where
 	// no string is null and the list is not empty
 	private ArrayList<String> schools = new ArrayList<String>();
 	// must have a representation of the number of stars the restaurant is rated at of type double between
-	// 0.0 and 5.0 inclusive
+	// 1.0 and 5.0 inclusive
 	private double stars = 0;
 	// must have a business name associated with it which is represented by a non-null string
 	private String name = null;

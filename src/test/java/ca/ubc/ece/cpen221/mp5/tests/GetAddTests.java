@@ -68,4 +68,12 @@ public class GetAddTests {
 			yelped.AddReview("{\"type\": \"review\", \"business_id\": \"1CBs84C-a-cuA3vncXVSAw\", \"votes\": {\"cool\": 0, \"useful\": 0, \"funny\": 0}, \"review_id\": \"0a-pCW4guXIlWNpVeBHChg\", \"text\": \"\", \"stars\": 2, \"user_id\": \"error\", \"date\": \"2006-07-26\"}");
 		} catch (Exception e) {}
 	}
+	
+	@Test
+	public void test7() throws IOException {
+		try {
+			YelpDB yelped = new YelpDB("data/restaurants.json", "data/reviews.json", "data/users.json");
+			yelped.getUser("{\"user_id\": \"me\"}");
+		} catch (Exception e) {};
+	}
 }

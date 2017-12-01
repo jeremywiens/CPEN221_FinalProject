@@ -27,7 +27,7 @@ public class Review {
 	private String text = null;
 	// must have a unique review_id which is  a non-null string
 	private String review_id = null;
-	// must have an integer number of stars >= 0 and <= 5
+	// must have an integer number of stars >= 1 and <= 5
 	private Integer stars = null;
 	// must have a list of votes: "funny", "cool" and "useful" where each type of vote has an integer
 	// associated to it which is >= 0
@@ -122,7 +122,7 @@ public class Review {
 			votes.put("useful", 0);
 			votes.put("cool", 0);
 		}
-		if (Null(this.review_id, this.business_id, this.user_id) || stars < 0 || 
+		if (Null(this.review_id, this.business_id, this.user_id) || stars < 1 || 
 				stars > 5){
 			throw new IllegalArgumentException("ERR: INVALID_REVIEW_STRING");
 		}
