@@ -42,6 +42,7 @@ public class YelpDB extends MP5AbstractDb<Restaurant> {
 	private List<String> usernames = new ArrayList<String>();
 	private List<String> user_IDs = new ArrayList<String>();
 	private List<String> business_IDs = new ArrayList<String>();
+	private List<String> review_IDs = new ArrayList<String>();
 
 	/**
 	 * YelpDB Constructor - creates the database given three files which are in JSON
@@ -112,7 +113,9 @@ public class YelpDB extends MP5AbstractDb<Restaurant> {
 		}
 		for (Restaurant business : restaurants) {
 			business_IDs.add(business.getBusinessID());
-
+		}
+		for (Review  review : reviews) {
+			review_IDs.add(review.getReviewID());
 		}
 	}
 
@@ -154,8 +157,8 @@ public class YelpDB extends MP5AbstractDb<Restaurant> {
 		// Get the x and y coordinates of restaurants based on latitude and longitude.
 		for (Restaurant R : restaurants) {
 			List<Double> xAndY = new ArrayList<>();
-			xAndY.add(R.getLatitude().doubleValue());
-			xAndY.add(R.getLongitude().doubleValue());
+			xAndY.add(R.getLatitude());
+			xAndY.add(R.getLongitude());
 			sendToKeans.put(count, xAndY);
 			intToRestaurant.put(count, R);
 			count++;
@@ -183,12 +186,11 @@ public class YelpDB extends MP5AbstractDb<Restaurant> {
 
 	@Override
 	public ToDoubleBiFunction getPredictorFunction(String user) { // What do I return??? This is weird.
-		User thisUser = null; // is this the user id or username?
+		User thisUser = null;
 		List<Restaurant> Restaurants = new ArrayList<Restaurant>();
 		List<Review> Reviews = new ArrayList<Review>();
 		List<Double> sumMeanx = new ArrayList<Double>();
 		List<Double> sumMeany = new ArrayList<Double>();
-		ToDoubleBiFunction<Double, Double> Regression;
 		double avgY;
 		double avgX;
 		double Sxx = 0.0;
@@ -223,13 +225,16 @@ public class YelpDB extends MP5AbstractDb<Restaurant> {
 		a = avgY - b * avgX;
 		Rsquared = Sxy * Sxy / (Sxx * Syy); // Now just have to compute the function and create it but unclear about how
 											// to do that.
-		// Possibly y = ax+b
 
-		Regression = (x, y) -> a * x + b;
+		ToDoubleBiFunction<MP5Db<Restaurant>, String> function = (MP5, restaurant_id) -> {
+			YelpDB db = (YelpDB) MP5;
+			double price = db.getRestaurant(restaurant_id).getPrice();
+			return a*price + b;
+		};
 
-		return Regression;
+		return function;
 	}
-
+	
 	public List<Restaurant> getRestaurantReviews(String user_ID) throws IllegalArgumentException {
 
 		List<Restaurant> restaurants = new ArrayList<Restaurant>();
@@ -301,12 +306,12 @@ public class YelpDB extends MP5AbstractDb<Restaurant> {
 		return sumMean;
 	}
 
-	public String getRestaurant(String business_id) throws IllegalArgumentException {
+	public Restaurant getRestaurant(String business_id) throws IllegalArgumentException {
 		Restaurant rest = null;
 		for (Restaurant restaurant : restaurants) {
 			rest = restaurant;
 			if (rest.getBusinessID().equals(business_id)) {
-				return rest.toString();
+				return rest;
 			}
 		}
 		throw new IllegalArgumentException();
@@ -314,9 +319,9 @@ public class YelpDB extends MP5AbstractDb<Restaurant> {
 
 	public String AddUser(String string) throws IllegalArgumentException {
 		User newUser = new User(string);
-		String ID = newUser.getUserID();
-		if (user_IDs.contains(ID)) {
-			throw new IllegalArgumentException();
+		while (user_IDs.contains(newUser.getUserID()) || newUser.getUserID() == null) {
+			newUser.changeID(Integer.toString(count));
+			count++;
 		}
 		users.add(newUser);
 		user_IDs.add(newUser.getUserID());
@@ -326,8 +331,9 @@ public class YelpDB extends MP5AbstractDb<Restaurant> {
 	public String AddRestaurant(String string) throws IllegalArgumentException {
 		try {
 			Restaurant newRestaurant = new Restaurant(string);
-			if (business_IDs.contains(newRestaurant.getBusinessID())) {
-				throw new IllegalArgumentException(); //change this
+			while (business_IDs.contains(newRestaurant.getBusinessID()) || newRestaurant.getBusinessID() == null) {
+				newRestaurant.changeID(Integer.toString(count));
+				count++;
 			}
 			restaurants.add(newRestaurant);
 			business_IDs.add(newRestaurant.getBusinessID());
@@ -339,14 +345,36 @@ public class YelpDB extends MP5AbstractDb<Restaurant> {
 	}
 
 	public String AddReview(String string) {// assume don't have to pass votes, text or date
-		Review newReview = new Review(string);
-		if (!business_IDs.contains(newReview.getBusinessID())) {
-			throw new IllegalArgumentException();// should change this to a specific exception
-		} else if (!user_IDs.contains(newReview.getUserID())) {
-			throw new IllegalArgumentException(); // should change this too
+		try {
+			Review newReview = new Review(string);
+			if (!business_IDs.contains(newReview.getBusinessID())) {
+				throw new IllegalArgumentException();// should change this to a specific exception
+			} else if (!user_IDs.contains(newReview.getUserID())) {
+				throw new IllegalArgumentException(); // should change this too
+			}
+			while (review_IDs.contains(newReview.getReviewID()) || newReview.getReviewID() == null) {
+				newReview.changeID(Integer.toString(count));
+				count++;
+			}
+			Restaurant rest = this.getRestaurant(newReview.getBusinessID());
+			rest.addReview(newReview.getNumStars());
+			User user = this.getUser(newReview.getUserID());
+			user.addReview(newReview.getNumStars(), newReview.getFunnyVotes(), newReview.getUsefulVotes(), newReview.getCoolVotes());
+			review_IDs.add(newReview.getReviewID());
+			reviews.add(newReview);
+			return newReview.toString();
+		} catch (Exception e) {
+			throw e;
 		}
-
-		return newReview.toString();
+	}
+	
+	public User getUser(String user_id) {
+		for (User user : users) {
+			if (user_id.equals(user.getUserID())) {
+				return user;
+			}
+		}
+		throw new IllegalArgumentException();
 	}
 
 }
