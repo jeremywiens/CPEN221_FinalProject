@@ -109,11 +109,5 @@ public class JsonTest {
 		System.out.println(tester.getDate());
 	}
 	
-	@Test
-	public void test4() throws IOException {
-		YelpDB yelped = new YelpDB("data/restaurants.json", "data/reviews.json", "data/users.json");
-		List<Review> restaurants = yelped.getUserReviews("cywLfetwd4k7gSu5ewNuhw");
-		System.out.println(restaurants.size());
-	}
 
 }

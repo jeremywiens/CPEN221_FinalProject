@@ -10,12 +10,14 @@ import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.stream.JsonParser;
 import javax.json.stream.JsonParser.Event;
+
 /**
  * Review - This is a representation of a review in a database made by a user for a product.
  * It takes in a JSON formatted string and parses it to store all the information in a review.
  * A review has various methods which can be called to obtain various information for
  * each instance of the review.
  */
+
 public class Review {
 	// Abstraction function: Review exists as a combination of strings representing the text,
 	// review_id, business_id, user_id, date and type. It also includes an integer representing the number
@@ -122,11 +124,11 @@ public class Review {
 		}
 		if (Null(this.review_id, this.business_id, this.user_id) || stars < 0 || 
 				stars > 5){
-			throw new IllegalArgumentException(); //change this exception
+			throw new IllegalArgumentException("ERR: INVALID_REVIEW_STRING");
 		}
 		
 		if (!type.equals("review")) {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("ERR: INVALID_REVIEW_STRING");
 		}
 	}
 	
