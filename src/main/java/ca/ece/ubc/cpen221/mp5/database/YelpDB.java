@@ -154,8 +154,8 @@ public class YelpDB extends MP5AbstractDb<Restaurant> {
 		// Get the x and y coordinates of restaurants based on latitude and longitude.
 		for (Restaurant R : restaurants) {
 			List<Double> xAndY = new ArrayList<>();
-			xAndY.add(R.getLatitude().doubleValue());
-			xAndY.add(R.getLongitude().doubleValue());
+			xAndY.add(R.getLatitude());
+			xAndY.add(R.getLongitude());
 			sendToKeans.put(count, xAndY);
 			intToRestaurant.put(count, R);
 			count++;
