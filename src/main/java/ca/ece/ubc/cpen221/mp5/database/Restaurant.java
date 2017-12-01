@@ -155,7 +155,8 @@ public class Restaurant {
 		}
 		parser.close();
 		if (Null(this.categories, this.city, this.full_address, this.latitude, this.longitude,
-				this.name, this.neighborhoods, this.categories, this.schools, this.type, this.state)) {
+				this.name, this.neighborhoods, this.categories, this.schools, this.type, this.state) 
+				|| this.price < 1 || this.price > 3) {
 			throw new IllegalArgumentException("ERR: INVALID_RESTAURANT_STRING.");
 		}
 		if (!type.equals("business")) {
