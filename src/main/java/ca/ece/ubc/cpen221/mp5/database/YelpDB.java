@@ -197,18 +197,22 @@ public class YelpDB extends MP5AbstractDb<Restaurant> {
 		throw new IllegalArgumentException();
 	}
 
-	public String AddUser(String string) throws IllegalArgumentException {
-		User newUser = new User(string);
-		while (user_IDs.contains(newUser.getUserID()) || newUser.getUserID() == null) {
-			newUser.changeID(Integer.toString(count));
-			count++;
+	public String AddUser(String string) {
+		try {
+			User newUser = new User(string);
+			while (user_IDs.contains(newUser.getUserID()) || newUser.getUserID() == null) {
+				newUser.changeID(Integer.toString(count));
+				count++;
+			}
+			users.add(newUser);
+			user_IDs.add(newUser.getUserID());
+			return newUser.toString();
+		} catch (Exception e) {
+			throw e;
 		}
-		users.add(newUser);
-		user_IDs.add(newUser.getUserID());
-		return newUser.toString();
 	}
 
-	public String AddRestaurant(String string) throws IllegalArgumentException {
+	public String AddRestaurant(String string) {
 		try {
 			Restaurant newRestaurant = new Restaurant(string);
 			while (business_IDs.contains(newRestaurant.getBusinessID()) || newRestaurant.getBusinessID() == null) {
@@ -220,17 +224,17 @@ public class YelpDB extends MP5AbstractDb<Restaurant> {
 
 			return newRestaurant.toString();
 		} catch (Exception e) {
-			throw new IllegalArgumentException(); //should change this
+			throw e;
 		}
 	}
 
-	public String AddReview(String string) {// assume don't have to pass votes, text or date
+	public String AddReview(String string) {
 		try {
 			Review newReview = new Review(string);
 			if (!business_IDs.contains(newReview.getBusinessID())) {
 				throw new IllegalArgumentException("ERR: NO_SUCH_RESTAURANT");
 			} else if (!user_IDs.contains(newReview.getUserID())) {
-				throw new IllegalArgumentException("ERR: NO_SUCH_USER"); // should change this too
+				throw new IllegalArgumentException("ERR: NO_SUCH_USER");
 			}
 			while (review_IDs.contains(newReview.getReviewID()) || newReview.getReviewID() == null) {
 				newReview.changeID(Integer.toString(count));

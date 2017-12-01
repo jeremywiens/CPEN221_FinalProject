@@ -122,4 +122,15 @@ public class ItemTests {
 			System.out.println(e.getMessage());
 		}
 	}
+	
+	@Test
+	public void test6() {
+		try {
+
+			User onlyName = new User ("{\"name\": \"Bob\", \"type\": \"review\"}");
+			
+		} catch (Exception e) {
+			
+		}
+	}
 }
