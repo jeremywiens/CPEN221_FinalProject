@@ -242,7 +242,7 @@ public class User {
 	 * for that review to the users total. 
 	 * 
 	 * 
-	 * @param addStars must be an int between 0 and 5 inclusive
+	 * @param addStars must be an int between 1 and 5 inclusive
 	 * @param funny must be an int >= 0
 	 * @param useful must be an int >= 0
 	 * @param cool must be an in >= 0

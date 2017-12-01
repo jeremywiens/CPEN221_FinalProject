@@ -41,13 +41,13 @@ public class Restaurant {
 	// must have a list of Strings representing the neighborhoods the Restaurant is located in and
 	// no string is null and the list is not empty
 	private ArrayList<String> neighborhoods = new ArrayList<String>();
-	// must have a price associated to it of type int and be greater than 0
-	private int price;
+	// must have a price associated to it of type int and be greater than 0 and less than 5
+	private int price = 0;
 	// must have a list of Strings representing the schools the Restaurant is located in where
 	// no string is null and the list is not empty
 	private ArrayList<String> schools = new ArrayList<String>();
 	// must have a representation of the number of stars the restaurant is rated at of type double between
-	// 0.0 and 5.0 inclusive
+	// 1.0 and 5.0 inclusive
 	private double stars = 0;
 	// must have a business name associated with it which is represented by a non-null string
 	private String name = null;
@@ -156,7 +156,7 @@ public class Restaurant {
 		parser.close();
 		if (Null(this.categories, this.city, this.full_address, this.latitude, this.longitude,
 				this.name, this.neighborhoods, this.categories, this.schools, this.type, this.state) 
-				|| this.price < 1 || this.price > 3) {
+				|| this.price < 1 || this.price > 4) {
 			throw new IllegalArgumentException("ERR: INVALID_RESTAURANT_STRING.");
 		}
 		if (!type.equals("business")) {
