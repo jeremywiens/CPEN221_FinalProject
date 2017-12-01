@@ -156,10 +156,10 @@ public class Restaurant {
 		parser.close();
 		if (Null(this.categories, this.city, this.full_address, this.latitude, this.longitude,
 				this.name, this.neighborhoods, this.categories, this.schools, this.type, this.state)) {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("ERR: INVALID_RESTAURANT_STRING.");
 		}
 		if (!type.equals("business")) {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("ERR: INVALID_RESTAURANT_STRING.");
 		}
 		if (url == null) {
 			this.url = "http://www.yelp.com/biz/" + name.toLowerCase().replace(" ", "-") + "-"+ 

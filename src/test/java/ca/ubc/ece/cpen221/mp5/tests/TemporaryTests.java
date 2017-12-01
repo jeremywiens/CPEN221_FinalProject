@@ -3,9 +3,14 @@ package ca.ubc.ece.cpen221.mp5.tests;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.ToDoubleBiFunction;
 
 import org.junit.Test;
 
+import ca.ece.ubc.cpen221.mp5.database.MP5Db;
+import ca.ece.ubc.cpen221.mp5.database.Restaurant;
 import ca.ece.ubc.cpen221.mp5.database.YelpDB;
 
 public class TemporaryTests {
@@ -22,7 +27,13 @@ public class TemporaryTests {
 		System.out.println(yelped.getUser("90wm_01FAIqhcgV_mPON9Q").getVotes());
 		System.out.println(yelped.getUser("90wm_01FAIqhcgV_mPON9Q").getNumReviews());
 		
-		
 	}
-
+	
+	@Test
+	public void test2() throws IOException{
+		YelpDB yelped = new YelpDB("data/restaurants.json", "data/reviews.json", "data/users.json");
+		ToDoubleBiFunction<MP5Db<Restaurant>, String> predict = yelped.getPredictorFunction("Rto4xWr5gXA2IbrfyAn-Xg");
+		double z = predict.applyAsDouble(yelped, "gclB3ED6uk6viWlolSb_uA");
+		System.out.println(z);
+	}
 }

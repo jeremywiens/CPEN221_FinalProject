@@ -100,7 +100,7 @@ public class User {
 		}
 		parser.close();
 		if (name == null) {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("ERR: INVALID_USER_STRING");
 		}
 		if (votes.isEmpty()) {
 			votes.put("funny", 0);
@@ -108,7 +108,7 @@ public class User {
 			votes.put("cool", 0);
 		}
 		if (!type.equals("user")) {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("ERR: INVALID_USER_STRING");
 		}
 		if (url == null) {
 			url = "http://www.yelp.com/user_details?userid=" + user_id;
