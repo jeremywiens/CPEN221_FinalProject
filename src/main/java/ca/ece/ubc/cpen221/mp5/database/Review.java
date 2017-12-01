@@ -72,37 +72,37 @@ public class Review {
 				key = parser.getString();
 				break;
 			case VALUE_STRING:
-				if (key.equals("type")) {
+				if ("type".equals(key)) {
 					this.type = parser.getString();
 				}
-				if (key.equals("business_id")) {
+				if ("business_id".equals(key)) {
 					this.business_id = parser.getString();
 				}
-				if (key.equals("review_id")) {
+				if ("review_id".equals(key)) {
 					this.review_id = parser.getString();
 				}
-				if (key.equals("text")) {
+				if ("text".equals(key)) {
 					this.text = parser.getString();
 				}
-				if (key.equals("user_id")) {
+				if ("user_id".equals(key)) {
 					this.user_id = parser.getString();
 				}
-				if (key.equals("date")) {
+				if ("date".equals(key)) {
 					this.date = parser.getString();
 				}
 				break;
 			case VALUE_NUMBER:
-				if (key.equals("cool")) {
+				if ("cool".equals(key)) {
 					this.votes.put(key, parser.getInt());
 				}
 
-				if (key.equals("useful")) {
+				if ("useful".equals(key)) {
 					this.votes.put(key, parser.getInt());
 				}
-				if (key.equals("funny")) {
+				if ("funny".equals(key)) {
 					this.votes.put(key, parser.getInt());
 				}
-				if (key.equals("stars")) {
+				if ("stars".equals(key)) {
 					this.stars = parser.getInt();
 				}
 				break;
