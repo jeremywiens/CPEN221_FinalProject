@@ -62,33 +62,33 @@ public class User {
 				key = parser.getString();
 				break;
 			case VALUE_STRING:
-				if (key.equals("url")) {
+				if ("url".equals(key)) {
 					this.url = parser.getString();
 				}
-				if (key.equals("user_id")) {
+				if ("user_id".equals(key)) {
 					this.user_id = parser.getString();
 				}
-				if (key.equals("name")) {
+				if ("name".equals(key)) {
 					this.name = parser.getString();
 				}
-				if (key.equals("type")) {
+				if ("type".equals(key)) {
 					this.type = parser.getString();
 				}
 				break;
 			case VALUE_NUMBER:
-				if (key.equals("funny")) {
+				if ("funny".equals(key)) {
 					this.votes.put(key, parser.getInt());
 				}
-				if (key.equals("useful")) {
+				if ("useful".equals(key)) {
 					this.votes.put(key, parser.getInt());
 				}
-				if (key.equals("cool")) {
+				if ("cool".equals(key)) {
 					this.votes.put(key, parser.getInt());
 				}
-				if (key.equals("review_count")) {
+				if ("review_count".equals(key)) {
 					this.review_count = parser.getInt();
 				}
-				if (key.equals("average_stars")) {
+				if ("average_stars".equals(key)) {
 					this.average_stars = parser.getBigDecimal().doubleValue();
 				}
 				break;
