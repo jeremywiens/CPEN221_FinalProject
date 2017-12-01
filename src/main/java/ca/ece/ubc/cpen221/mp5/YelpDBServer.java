@@ -8,6 +8,7 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import ca.ece.ubc.cpen221.mp5.database.Restaurant;
 import ca.ece.ubc.cpen221.mp5.database.YelpDB;
 
 /**
@@ -51,6 +52,7 @@ public class YelpDBServer {
 
 	private ServerSocket serverSocket;
 	private YelpDB thisYelp;
+	private boolean bools = true;
 
 	// Rep invariant: serverSocket != null
 	//
@@ -78,7 +80,9 @@ public class YelpDBServer {
 	 *             if the main server socket is broken
 	 */
 	public void serve() throws IOException {
-		while (true) {
+		bools = true;
+		while (bools) {
+			//System.out.println("in serve");
 			// block until a client connects
 			final Socket socket = serverSocket.accept();
 			// create a new thread to handle that client
@@ -86,7 +90,10 @@ public class YelpDBServer {
 				public void run() {
 					try {
 						try {
-							handle(socket);
+							bools = handle(socket);
+							if(bools == false) {
+								serverSocket.close();
+							}
 						} finally {
 							socket.close();
 						}
@@ -98,7 +105,7 @@ public class YelpDBServer {
 					}
 				}
 			});
-			// start the thread
+			// start the thread 
 			handler.start();
 		}
 	}
@@ -111,7 +118,7 @@ public class YelpDBServer {
 	 * @throws IOException
 	 *             if connection encounters an error
 	 */
-	private void handle(Socket socket) throws IOException {
+	private boolean handle(Socket socket) throws IOException {
 		System.err.println("client connected");
 
 		// get the socket's input stream, and wrap converters around it
@@ -135,7 +142,8 @@ public class YelpDBServer {
 					String command = newArgs[0];
 
 					if (command.trim().toUpperCase().equals("GETRESTAURANT")) {
-						response += thisYelp.getRestaurant(line.substring(13, line.length()).trim());
+						//Restaurant rest = thisYelp.getRestaurant(line.substring(13, line.length()).trim());
+						// += rest.toString();
 						System.err.println("reply: " + response);
 						out.println(response); 
 					} else if (command.trim().toUpperCase().equals("ADDUSER")) {
@@ -150,14 +158,21 @@ public class YelpDBServer {
 						response += thisYelp.AddReview(line.substring(9, line.length()).trim());
 						System.err.println("reply: " + response);
 						out.println(response);
+					} else if(command.contentEquals("end")){
+						response += "ending...";
+						System.err.println("reply: " + response);
+						out.println(response);
+						return false;
 					} else {
-						System.err.println("ERR: ILLEGAL_REQUEST");
-						out.print("err: ILLEGAL_REQUEST\n");
+						response += "ERR: ILLEGAL_REQUEST";
+						System.err.println("reply: " + response);
+						out.println(response);
 					}
 				} catch (Exception e) {
 					// complain about ill-formatted request
-					System.err.println("reply: err");
-					out.print("err\n");
+					response += e.getMessage();
+					System.err.println("reply: " + response);
+					out.println(response);
 				}
 				// important! our PrintWriter is auto-flushing, but if it were
 				// not:
@@ -167,6 +182,7 @@ public class YelpDBServer {
 			out.close();
 			in.close();
 		}
+		return true;
 	}
 
 	/**
@@ -175,21 +191,17 @@ public class YelpDBServer {
 	 */
 	public static void main(String[] args) {
 		int port = 0;
-		try {
 			if (args[0] != null)
 				port = Integer.parseInt(args[0]);
 			// requires 0 <= port <= 65535
 			if (port < 0 || port > 65535) {
 				System.out.println("requires 0 <= port <= 65535");
-				System.exit(0);
+				//System.exit(0);
 			}
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			System.exit(0);
-		}
-		System.out.println(port);
+
 		try {
 			YelpDBServer server = new YelpDBServer(port);
+
 			server.serve();
 		} catch (IOException e) {
 			e.printStackTrace();
