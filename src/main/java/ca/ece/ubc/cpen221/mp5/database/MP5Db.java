@@ -38,4 +38,5 @@ public interface MP5Db<T> {
 	 */
 	ToDoubleBiFunction<MP5Db<T>, String> getPredictorFunction(String user);
 
+
 }

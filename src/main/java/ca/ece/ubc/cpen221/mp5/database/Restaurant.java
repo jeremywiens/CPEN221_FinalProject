@@ -67,7 +67,7 @@ public class Restaurant {
 	 * If any of the tokens except for review_count, stars, or type don't exist in the string Restaurant 
 	 * will throw an IllegalArgumentException. If type is not business it will throw an exception as well.
 	 * If type, is not assigned it is given declared as business. If stars or review count is not included
-	 * it is given the value of 0. 
+	 * it is given the value of 0. If extra information is included in JSON format, it is ignored.
 	 * 
 	 * @param Restaurant
 	 * 			JSON String containing Restaurant information excluding type, review count and stars.
@@ -154,25 +154,28 @@ public class Restaurant {
 			}
 		}
 		parser.close();
-		if (notNull(this.business_id, this.categories, this.city, this.full_address, this.latitude, this.longitude,
-				this.name, this.neighborhoods, this.categories, this.schools, this.url, this.type, this.photo_url,
-				this.state)) {
+		if (Null(this.categories, this.city, this.full_address, this.latitude, this.longitude,
+				this.name, this.neighborhoods, this.categories, this.schools, this.type, this.state)) {
 			throw new IllegalArgumentException();
 		}
-		
 		if (!type.equals("business")) {
 			throw new IllegalArgumentException();
+		}
+		if (url == null) {
+			this.url = "http://www.yelp.com/biz/" + name.toLowerCase().replace(" ", "-") + "-"+ 
+			city.toLowerCase().replace(" ", "-");
 		}
 	}
 
 	//checks to see if an object is notNull
-	private boolean notNull(Object... args) {
+	private boolean Null(Object... args) {
+		boolean Null = false;
 		for (Object arg : args) {
-			if (arg != null) {
-				return false;
-			} 
+			if (arg == null) {
+				return true;
+			}
 		}
-		return true;
+		return Null;
 	}
 
 	/**
@@ -325,6 +328,13 @@ public class Restaurant {
 	
 	/**
 	 * toString() returns the information contained in this restaurant back into JSON string format.
+	 * For example: {"open": true, "url": "http://www.yelp.com/biz/cafe-3-berkeley", 
+	 * "longitude": -122.260408, "neighborhoods": ["Telegraph Ave", "UC Campus Area"], 
+	 * "business_id": "gclB3ED6uk6viWlolSb_uA", "name": "Cafe 3", 
+	 * "categories": ["Cafes", "Restaurants"], "state": "CA", "type": "business", "stars": 2.0, 
+	 * "city": "Berkeley", "full_address": "2400 Durant Ave\nTelegraph Ave\nBerkeley, CA 94701", 
+	 * "review_count": 9, "photo_url": "http://s3-media1.ak.yelpcdn.com/bphoto/AaHq1UzXiT6zDBUYrJ2NKA/ms.jpg",
+	 *  "schools": ["University of California at Berkeley"], "latitude": 37.867417, "price": 1}
 	 * 
 	 * @return the information contained in this restaurant as a string in JSON format
 	 */
@@ -367,5 +377,27 @@ public class Restaurant {
 
 		return rest.toString();
 	}
+	
+	/**
+	 * changeID - changes the restaurantID for this review to the newID provided
+	 * 
+	 * @param newID must be a non-null string
+	 */
+	public void changeID(String newID) {
+		this.business_id = newID;
+	}
+	
+	/**
+	 * addReview - calculates the new average star rating for this restaurant with the number of stars passed.
+	 * It increases the review_count of this restaurant by one.
+	 * 
+	 * 
+	 * @param addStars must be an int between 0 and 5 inclusive
+	 */
+	public void addReview(int addStars) {
+		this.stars = (this.stars*this.review_count + addStars)/++this.review_count;
+	}
+	
+	
 
 }
