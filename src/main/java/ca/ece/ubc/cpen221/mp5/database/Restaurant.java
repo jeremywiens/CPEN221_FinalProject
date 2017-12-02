@@ -41,13 +41,13 @@ public class Restaurant {
 	// must have a list of Strings representing the neighborhoods the Restaurant is located in and
 	// no string is null and the list is not empty
 	private ArrayList<String> neighborhoods = new ArrayList<String>();
-	// must have a price associated to it of type int and be greater than 0
-	private int price;
+	// must have a price associated to it of type int and be greater than 0 and less than 5
+	private int price = 0;
 	// must have a list of Strings representing the schools the Restaurant is located in where
 	// no string is null and the list is not empty
 	private ArrayList<String> schools = new ArrayList<String>();
 	// must have a representation of the number of stars the restaurant is rated at of type double between
-	// 0.0 and 5.0 inclusive
+	// 1.0 and 5.0 inclusive
 	private double stars = 0;
 	// must have a business name associated with it which is represented by a non-null string
 	private String name = null;
@@ -90,64 +90,64 @@ public class Restaurant {
 				key = parser.getString();
 				break;
 			case VALUE_STRING:
-				if (key.equals("url")) {
+				if ("url".equals(key)) {
 					this.url = parser.getString();
 				}
-				if (key.equals("neighborhoods")) {
+				if ("neighborhoods".equals(key)) {
 					this.neighborhoods.add(parser.getString());
 				}
-				if (key.equals("business_id")) {
+				if ("business_id".equals(key)) {
 					this.business_id = parser.getString();
 				}
-				if (key.equals("name")) {
+				if ("name".equals(key)) {
 					this.name = parser.getString();
 				}
-				if (key.equals("categories")) {
+				if ("categories".equals(key)) {
 					this.categories.add(parser.getString());
 				}
-				if (key.equals("state")) {
+				if ("state".equals(key)) {
 					this.state = parser.getString();
 				}
-				if (key.equals("type")) {
+				if ("type".equals(key)) {
 					this.type = parser.getString();
 				}
-				if (key.equals("city")) {
+				if ("city".equals(key)) {
 					this.city = parser.getString();
 				}
-				if (key.equals("full_address")) {
+				if ("full_address".equals(key)) {
 					this.full_address = parser.getString();
 				}
-				if (key.equals("photo_url")) {
+				if ("photo_url".equals(key)) {
 					this.photo_url = parser.getString();
 				}
-				if (key.equals("schools")) {
+				if ("schools".equals(key)) {
 					this.schools.add(parser.getString());
 				}
 				break;
 			case VALUE_NUMBER:
-				if (key.equals("price")) {
+				if ("price".equals(key)) {
 					this.price = parser.getInt();
 				}
-				if (key.equals("latitude")) {
+				if ("latitude".equals(key)) {
 					this.latitude = parser.getBigDecimal().doubleValue();
 				}
-				if (key.equals("review_count")) {
+				if ("review_count".equals(key)) {
 					this.review_count = parser.getInt();
 				}
-				if (key.equals("stars")) {
+				if ("stars".equals(key)) {
 					this.stars = parser.getBigDecimal().doubleValue();
 				}
-				if (key.equals("longitude")) {
+				if ("longitude".equals(key)) {
 					this.longitude = parser.getBigDecimal().doubleValue();
 				}
 				break;
 			case VALUE_TRUE:
-				if (key.equals("open")) {
+				if ("open".equals(key)) {
 					this.open = (true);
 				}
 				break;
 			case VALUE_FALSE:
-				if (key.equals("open")) {
+				if ("open".equals(key)) {
 					this.open = (false);
 				}
 				break;

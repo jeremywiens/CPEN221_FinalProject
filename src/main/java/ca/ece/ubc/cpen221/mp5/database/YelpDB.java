@@ -177,8 +177,24 @@ public class YelpDB extends MP5AbstractDb<Restaurant> {
 		return returnString;
 	}
 
+	/**
+	 * getPredictorFunction - Takes a String representing the user_ID for a user. The getPredictorFunction
+     * finds the user from the userID and using the user's information, calculates the most likely rating by this
+     * user for a restaurant based on a restaurant's price. The getPredictorFunction returns a 
+     * ToDoubleBifunction which can take any database of type MP5Db<Restaurant> and a restaurantID
+     * which can be used to find the predicted rating of a restaurant in the database for this user.
+	 *
+	 *
+	 * @param user - a non-null string representing the user_id of the user which is already in the database
+	 * @return a ToDoubleBiFunction which can take in a database of type MP5Db<Restaurant> and a non-null string
+	 * 			representation of a restaurantID and calculate the expected rating of this user for this
+	 * 			restaurant in the MP5Db<Restaurant> database based on the restaurants price. The function
+	 * 			can only return a double value between 1.0 and 5.0. If all the restaurants for a user have
+	 * 			the same price, or if there are no reviews or restaurants a IllegalArgumentException is thrown.
+	 */
 	@Override
 	public ToDoubleBiFunction<MP5Db<Restaurant>, String> getPredictorFunction(String user) {
+		//Pass the list of restaurants and review to the PredictorFunction
 		PredictorFunction predict = new PredictorFunction(restaurants, reviews);
 		ToDoubleBiFunction<MP5Db<Restaurant>, String> function = predict.getPredictorFunction(user);
 
@@ -186,7 +202,16 @@ public class YelpDB extends MP5AbstractDb<Restaurant> {
 	}
 	
 
-	public Restaurant getRestaurant(String business_id) throws IllegalArgumentException {
+	/**
+	 * getRestaurant - Takes in a businessID and searches this YelpDb for the restaurant with that business
+	 * 					businessID and returns the Restuarant.
+	 * 
+	 * @param business_id - The string of the business_ID of the restaurant to search for in the 
+	 * 						Yelp database, must not be null
+	 * @return The Restaurant with the provided businessID, or throws an IllegalArgumentException is the
+	 * 			restaurant doesn't exist.
+	 */
+	public Restaurant getRestaurant(String business_id) {
 		Restaurant rest = null;
 		for (Restaurant restaurant : restaurants) {
 			rest = restaurant;
@@ -194,9 +219,19 @@ public class YelpDB extends MP5AbstractDb<Restaurant> {
 				return rest;
 			}
 		}
-		throw new IllegalArgumentException();
+		throw new IllegalArgumentException("ERR: NO SUCH RESTAURANT");
 	}
 
+	/**
+	 * AddUser - Takes in a string in JSON format representing a user to be added to the database.
+	 * The user is added to the database provided that at a minimum the username is provided in JSON format,
+	 * and a string in JSON format representing the users information is returned. If the UserID already
+	 * exists, it is replaced with a  unique userID. If the string is not in JSON format, does not contain
+	 * valid user information, or does not include the username, an IllegalArgumentException is thrown.
+	 * 
+	 * @param string - The String in JSON format representing the user to be added, cannot be null.
+	 * @return A string representing the user in JSON format
+	 */
 	public String AddUser(String string) {
 		try {
 			User newUser = new User(string);
@@ -208,13 +243,24 @@ public class YelpDB extends MP5AbstractDb<Restaurant> {
 			user_IDs.add(newUser.getUserID());
 			return newUser.toString();
 		} catch (Exception e) {
-			throw e;
+			throw new IllegalArgumentException("ERR: INVALID_USER_STRING");
 		}
 	}
 
+	/**
+	 * AddRestaurant - Takes in a string in JSON format representing a restaurant to be added to the database.
+	 * The user is added to the database provided that all the restaurant information is provided in 
+	 * JSON format excluding the stars, url, photo_url, and review_count of the Restaurant. If 
+	 * the businessID already exists, it is replaced with a  unique businessID. If the string is not in 
+	 * JSON format or does not contain valid restaurant information an IllegalArgumentException is thrown.
+	 * 
+	 * @param string - The String in JSON format representing the restaurant to be added, cannot be null.
+	 * @return A string representing the restaurant in JSON format
+	 */
 	public String AddRestaurant(String string) {
 		try {
 			Restaurant newRestaurant = new Restaurant(string);
+			//if the database contains the businessID already or if it is null, generate a new one based on an int value
 			while (business_IDs.contains(newRestaurant.getBusinessID()) || newRestaurant.getBusinessID() == null) {
 				newRestaurant.changeID(Integer.toString(count));
 				count++;
@@ -224,34 +270,64 @@ public class YelpDB extends MP5AbstractDb<Restaurant> {
 
 			return newRestaurant.toString();
 		} catch (Exception e) {
-			throw e;
+			throw new IllegalArgumentException("ERR: INVALID_RESTAURANT_STRING");
 		}
 	}
 
+	/**
+	 * AddReview - Takes in a string in JSON format representing a review to be added to the database.
+	 * The review is added to the database provided that all the review information is provided in 
+	 * JSON format excluding the information for reviewID, text, votes and type of the review. The review information 
+	 * is added to the user who wrote it and is added to the restaurant which the review is given for. If the
+	 * restaurant is not in the database, an IllegalArgumentException is thrown. An IllegalArgumentException
+	 * is also thrown if the user is not already in the database. If the review_ID already exists
+	 * in this database, a new unique reviewID is generated. If the string is not in JSON format or does 
+	 * not contain valid restaurant information an IllegalArgumentException is thrown.
+	 * 
+	 * @param string - The String in JSON format representing the review to be added, cannot be null.
+	 * @return A string representing the review in JSON format
+	 */
 	public String AddReview(String string) {
 		try {
 			Review newReview = new Review(string);
+			//checks if this review's businessID is already a restaurant, if not throws an exception
 			if (!business_IDs.contains(newReview.getBusinessID())) {
 				throw new IllegalArgumentException("ERR: NO_SUCH_RESTAURANT");
+			//checks if this review's userID is already a user, if not throws an exception
 			} else if (!user_IDs.contains(newReview.getUserID())) {
 				throw new IllegalArgumentException("ERR: NO_SUCH_USER");
-			}
+			}//if the database contains the reviewID already or if it is null, generate a new one based on an int value
 			while (review_IDs.contains(newReview.getReviewID()) || newReview.getReviewID() == null) {
 				newReview.changeID(Integer.toString(count));
 				count++;
 			}
+			//add review info to the restaurant
 			Restaurant rest = this.getRestaurant(newReview.getBusinessID());
 			rest.addReview(newReview.getNumStars());
+			
+			//add review info to the user
 			User user = this.getUser(newReview.getUserID());
 			user.addReview(newReview.getNumStars(), newReview.getFunnyVotes(), newReview.getUsefulVotes(), newReview.getCoolVotes());
+			
+			//add review info to the database
 			review_IDs.add(newReview.getReviewID());
 			reviews.add(newReview);
 			return newReview.toString();
 		} catch (Exception e) {
-			throw e;
+			throw new IllegalArgumentException("ERR: INVALID_REVIEW_STRING");
 		}
 	}
 	
+	/**
+	 * 
+	 * getRestaurant - Takes in a userID and searches this YelpDb for the restaurant with that business
+	 * 					businessID and returns the User.
+	 * 
+	 * @param business_id - The string of the userID for the user to search for in the 
+	 * 						Yelp database, must not be null
+	 * @return The User with the provided userID, or throws an IllegalArgumentException is the
+	 * 			restaurant doesn't exist.
+	 */
 	public User getUser(String user_id) {
 		for (User user : users) {
 			if (user_id.equals(user.getUserID())) {

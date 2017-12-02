@@ -27,7 +27,7 @@ public class Review {
 	private String text = null;
 	// must have a unique review_id which is  a non-null string
 	private String review_id = null;
-	// must have an integer number of stars >= 0 and <= 5
+	// must have an integer number of stars >= 1 and <= 5
 	private Integer stars = null;
 	// must have a list of votes: "funny", "cool" and "useful" where each type of vote has an integer
 	// associated to it which is >= 0
@@ -72,37 +72,37 @@ public class Review {
 				key = parser.getString();
 				break;
 			case VALUE_STRING:
-				if (key.equals("type")) {
+				if ("type".equals(key)) {
 					this.type = parser.getString();
 				}
-				if (key.equals("business_id")) {
+				if ("business_id".equals(key)) {
 					this.business_id = parser.getString();
 				}
-				if (key.equals("review_id")) {
+				if ("review_id".equals(key)) {
 					this.review_id = parser.getString();
 				}
-				if (key.equals("text")) {
+				if ("text".equals(key)) {
 					this.text = parser.getString();
 				}
-				if (key.equals("user_id")) {
+				if ("user_id".equals(key)) {
 					this.user_id = parser.getString();
 				}
-				if (key.equals("date")) {
+				if ("date".equals(key)) {
 					this.date = parser.getString();
 				}
 				break;
 			case VALUE_NUMBER:
-				if (key.equals("cool")) {
+				if ("cool".equals(key)) {
 					this.votes.put(key, parser.getInt());
 				}
 
-				if (key.equals("useful")) {
+				if ("useful".equals(key)) {
 					this.votes.put(key, parser.getInt());
 				}
-				if (key.equals("funny")) {
+				if ("funny".equals(key)) {
 					this.votes.put(key, parser.getInt());
 				}
-				if (key.equals("stars")) {
+				if ("stars".equals(key)) {
 					this.stars = parser.getInt();
 				}
 				break;
@@ -122,7 +122,7 @@ public class Review {
 			votes.put("useful", 0);
 			votes.put("cool", 0);
 		}
-		if (Null(this.review_id, this.business_id, this.user_id) || stars < 0 || 
+		if (Null(this.review_id, this.business_id, this.user_id) || stars < 1 || 
 				stars > 5){
 			throw new IllegalArgumentException("ERR: INVALID_REVIEW_STRING");
 		}
