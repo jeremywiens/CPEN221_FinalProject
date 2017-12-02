@@ -91,7 +91,7 @@ public class YelpDBServer {
 					try {
 						try {
 							bools = handle(socket);
-							if(bools == false) {
+							if(!bools) {
 								serverSocket.close();
 							}
 						} finally {
@@ -142,8 +142,8 @@ public class YelpDBServer {
 					String command = newArgs[0];
 
 					if (command.trim().toUpperCase().equals("GETRESTAURANT")) {
-						//Restaurant rest = thisYelp.getRestaurant(line.substring(13, line.length()).trim());
-						// += rest.toString();
+						Restaurant rest = thisYelp.getRestaurant(line.substring(13, line.length()).trim());
+						response += rest.toString();
 						System.err.println("reply: " + response);
 						out.println(response); 
 					} else if (command.trim().toUpperCase().equals("ADDUSER")) {

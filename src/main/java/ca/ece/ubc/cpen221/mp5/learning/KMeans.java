@@ -22,6 +22,8 @@ import java.util.Set;
  */
 public class KMeans {
 
+	private static HashMap<Integer, List<Double>> kPoints;
+
 	/**
 	 * FindKMeans requires a map of Integers to x and y coordinates. The integers
 	 * can represent any object which will be clustered in 2 dimensions. This method
@@ -75,7 +77,7 @@ public class KMeans {
 	 */
 	private static Map<Integer, Integer> DoKMeans(Map<Integer, List<Double>> thisMap, int k) {
 		// Get random inital points for each cluster k.
-		HashMap<Integer, List<Double>> kPoints = getInitialPoints(thisMap, k);
+		kPoints = getInitialPoints(thisMap, k);
 		boolean change = true;
 
 		HashMap<Integer, Integer> objectToCluster = new HashMap<>();
@@ -114,7 +116,7 @@ public class KMeans {
 					objectToCluster.put(o, kValue);
 				}
 			}
-			kPoints = reEvalKPoints(thisMap, objectToCluster, k, kPoints);
+			kPoints = reEvalKPoints(thisMap, objectToCluster, k);
 		}
 		return objectToCluster;
 	}
@@ -144,7 +146,7 @@ public class KMeans {
 	 *         does not change, it will be returned the same value as it was passed.
 	 */
 	private static HashMap<Integer, List<Double>> reEvalKPoints(Map<Integer, List<Double>> thisMap,
-			HashMap<Integer, Integer> objectToCluster, int k, HashMap<Integer, List<Double>> kPoints) {
+			HashMap<Integer, Integer> objectToCluster, int k) {
 		HashMap<Integer, List<Double>> newKPoints = kPoints;
 		double weightedX;
 		double weightedY;
@@ -162,7 +164,7 @@ public class KMeans {
 					count++;
 				}
 			}
-			
+
 			if (count > 0) {
 				List<Double> kCoordinates = new ArrayList<Double>();
 				kCoordinates.add(weightedX / count);
@@ -239,15 +241,66 @@ public class KMeans {
 		}
 
 		Random rand = new Random();
-
-		// Find random points within this domain and range
-		for (int i = 0; i < k; i++) {
-			List<Double> kList = new ArrayList<>();
-			kList.add(minX + (maxX - minX) * rand.nextDouble());
-			kList.add(minY + (maxY - minY) * rand.nextDouble());
-			firstKPoints.put(i, kList);
+		List<Integer> nonEmptyClusters = new ArrayList<>();
+		while (nonEmptyClusters.size() != (k)) {
+			// Find random points within this domain and range
+			for (int i = 0; i < k; i++) {
+				if (!nonEmptyClusters.contains(i)) {
+					List<Double> kList = new ArrayList<>();
+					kList.add(minX + (maxX - minX) * rand.nextDouble());
+					kList.add(minY + (maxY - minY) * rand.nextDouble());
+					firstKPoints.put(i, kList);
+				}
+			}
+			nonEmptyClusters = nonEmptyClusters(thisMap, k, firstKPoints);
 		}
+
 		return firstKPoints;
+	}
+
+	private static List<Integer> nonEmptyClusters(Map<Integer, List<Double>> thisMap, int k,
+			HashMap<Integer, List<Double>> firstKPoints) {
+
+		List<Integer> nonEmptyClusters = new ArrayList<>();
+		HashMap<Integer, Integer> objectToCluster = new HashMap<>();
+		// Initialize thisMap to put all points in the first cluster
+		for (Integer o : thisMap.keySet())
+			objectToCluster.put(o, 0);
+
+		// Keep performing the algorithm of finding new cluster points, until no point
+		// changes its cluster
+		for (Integer o : objectToCluster.keySet()) {
+			int kCounter = 0;
+			int kValue = 0;
+			double previousDistance = 999999999;
+			double thisDistance;
+
+			// Get X-coordinate
+			double thisX = thisMap.get(o).get(0);
+			// Get Y-coordinate
+			double thisY = thisMap.get(o).get(1);
+
+			// compare distances and move any that are closer to another
+			for (Integer K : firstKPoints.keySet()) {
+				thisDistance = getDistance(thisX, thisY, firstKPoints.get(K).get(0), firstKPoints.get(K).get(1));
+				if (thisDistance < previousDistance) {
+					kValue = kCounter;
+					previousDistance = thisDistance;
+				}
+				// Keep track of which cluster value we are considering.
+				kCounter++;
+			}
+			// Re-assigns each object to its cluster
+			if (kValue != objectToCluster.get(o)) {
+				objectToCluster.put(o, kValue);
+			}
+		}
+		for (Integer o : objectToCluster.keySet()) {
+			if (!nonEmptyClusters.contains(objectToCluster.get(o))) {
+				nonEmptyClusters.add(objectToCluster.get(o));
+			}
+		}
+		return nonEmptyClusters;
 	}
 
 }
