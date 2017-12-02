@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="ca.ubc.ece.cpen221.mp5.tests.Server" tests="3" skipped="0" failures="0" errors="0" timestamp="2017-12-02T07:32:09" hostname="GoldNSexy" time="6.378">
+<testsuite name="ca.ubc.ece.cpen221.mp5.tests.Server" tests="3" skipped="0" failures="0" errors="0" timestamp="2017-12-02T08:06:41" hostname="GoldNSexy" time="6.405">
   <properties/>
-  <testcase name="test" classname="ca.ubc.ece.cpen221.mp5.tests.Server" time="3.454"/>
-  <testcase name="test1" classname="ca.ubc.ece.cpen221.mp5.tests.Server" time="1.446"/>
-  <testcase name="test2" classname="ca.ubc.ece.cpen221.mp5.tests.Server" time="1.478"/>
+  <testcase name="test" classname="ca.ubc.ece.cpen221.mp5.tests.Server" time="3.469"/>
+  <testcase name="test1" classname="ca.ubc.ece.cpen221.mp5.tests.Server" time="1.43"/>
+  <testcase name="test2" classname="ca.ubc.ece.cpen221.mp5.tests.Server" time="1.505"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

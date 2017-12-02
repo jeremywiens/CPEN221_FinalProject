@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="ca.ubc.ece.cpen221.mp5.tests.PredictorTests" tests="2" skipped="0" failures="0" errors="0" timestamp="2017-12-02T07:32:06" hostname="GoldNSexy" time="2.901">
+<testsuite name="ca.ubc.ece.cpen221.mp5.tests.PredictorTests" tests="2" skipped="0" failures="0" errors="0" timestamp="2017-12-02T08:06:38" hostname="GoldNSexy" time="2.947">
   <properties/>
-  <testcase name="test" classname="ca.ubc.ece.cpen221.mp5.tests.PredictorTests" time="1.47"/>
-  <testcase name="test1" classname="ca.ubc.ece.cpen221.mp5.tests.PredictorTests" time="1.431"/>
+  <testcase name="test" classname="ca.ubc.ece.cpen221.mp5.tests.PredictorTests" time="1.528"/>
+  <testcase name="test1" classname="ca.ubc.ece.cpen221.mp5.tests.PredictorTests" time="1.418"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
