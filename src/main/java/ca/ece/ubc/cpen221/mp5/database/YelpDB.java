@@ -1,17 +1,13 @@
 package ca.ece.ubc.cpen221.mp5.database;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+
 import java.util.List;
 import java.util.Set;
-import java.util.function.ToDoubleBiFunction;
-
-import ca.ece.ubc.cpen221.mp5.learning.*;
 
 import java.io.*;
 
 /**
- * YelpDB - This is a database of information found on YelpDB. This implements
+ * YelpDB - extends MP5AbstractDb - This is a database of information found on YelpDB. This implements
  * MP5Db but is used with Restaurants as the business type which are reviewed.
  * This database exists as a list of restaurants, reviews and users. Various
  * algorithms can be performed on this database.
@@ -26,16 +22,8 @@ public class YelpDB extends MP5AbstractDb<Restaurant> {
 	// Rep Invariant: Each list must not be null.
 	// Restaurants must have a unique business ID
 	private List<Restaurant> restaurants;
-	// Reviews must have a unique ID, and be written by users for restaurants which
-	// exist in YelpDB
-	// private List<Review> reviews;
-	// Users must have unique user ID
-	// private List<User> users;
 	private int count = 0;
-	// private List<String> usernames = new ArrayList<String>();
-	// private List<String> user_IDs = new ArrayList<String>();
-	// private List<String> business_IDs = new ArrayList<String>();
-	// private List<String> review_IDs = new ArrayList<String>();
+
 
 	/**
 	 * YelpDB Constructor - creates the database given three files which are in JSON
