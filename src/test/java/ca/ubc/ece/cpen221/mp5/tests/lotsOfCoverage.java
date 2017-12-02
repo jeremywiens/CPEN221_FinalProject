@@ -9,9 +9,6 @@ import org.junit.Test;
 
 import ca.ece.ubc.cpen221.mp5.database.Business;
 import ca.ece.ubc.cpen221.mp5.database.MP5AbstractDb;
-import ca.ece.ubc.cpen221.mp5.database.Restaurant;
-import ca.ece.ubc.cpen221.mp5.database.Review;
-import ca.ece.ubc.cpen221.mp5.database.User;
 import ca.ece.ubc.cpen221.mp5.database.YelpDB;
 
 public class lotsOfCoverage {
