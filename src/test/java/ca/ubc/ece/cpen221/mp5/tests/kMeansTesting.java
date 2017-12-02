@@ -43,9 +43,9 @@ public class kMeansTesting {
 		thisMap.put(4, four);
 
 		thisMap.toString();
-		KMeans.findKMeans(thisMap, 10);
+		KMeans.findKMeans(thisMap, 4);
 		assertTrue(true);
-		List<Set<Integer>> sdf = KMeans.findKMeans(thisMap, 10);
+		List<Set<Integer>> sdf = KMeans.findKMeans(thisMap, 4);
 
 		int min = 5;
 		for(Set<Integer> s : sdf) {
@@ -64,7 +64,9 @@ public class kMeansTesting {
 	public void test1() throws IOException {
 		YelpDB hello = new YelpDB("data/restaurants.json", "data/reviews.json", "data/users.json");
 		hello.kMeansClusters_json(18);
-	//	System.out.println(hello.kMeansClusters_json(17));
+
+		//System.out.println(hello.kMeansClusters_json(30));
+
 		// Read comment above
 		//I made a really cool test for this, also deleted, not making again.
 		// Print out result from string above, paste in json file and run python script.

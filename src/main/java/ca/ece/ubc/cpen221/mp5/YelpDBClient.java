@@ -127,15 +127,20 @@ public class YelpDBClient {
 			// users need just a name, cant have duplicate id
 			// restaurants need latitude, longtitude, and name, cant have duplicate id
 			// reviews need busniess id, user id, and stars
+			
+			System.out.println("Welcome: \nTo quit, type <close>");
+			
 			while (bools) {
 
 				Scanner scanner = new Scanner(System.in);
 				String line = scanner.nextLine();
-				if (line.trim().equals("close")) {
+				if (line.trim().equals("close") || line.trim().equals("end242")) {
 					bools = false;
 					System.out.println("Closing");
-					client.sendRequest("end");
-					client.getReply();
+					if (line.trim().equals("end242")) {
+						client.sendRequest("end");
+						client.getReply();
+					}
 				} else {
 					client.sendRequest(line.trim());
 

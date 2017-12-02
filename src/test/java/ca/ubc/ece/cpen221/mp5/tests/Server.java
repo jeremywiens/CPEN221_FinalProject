@@ -79,7 +79,7 @@ public class Server {
 			why.add(two);
 			why.add(three);
 			for (String[] args : why) {
-				String input = "close";
+				String input = "end242";
 				InputStream in = new ByteArrayInputStream(input.getBytes());
 				System.setIn(in);
 				try {
