@@ -209,7 +209,7 @@ public class MP5AbstractDb<T> implements MP5Db<T> {
 		return function;
 	}
 
-}
+
 
 	/**
 	 * AddUser - Takes in a string in JSON format representing a user to be added to
@@ -283,7 +283,7 @@ public class MP5AbstractDb<T> implements MP5Db<T> {
 					count++;
 				}
 				// add review info to the restaurant
-				Business rest = this.getRestaurant(newReview.getBusinessID());
+				Business rest = this.getBusiness(newReview.getBusinessID());
 				rest.addReview(newReview.getNumStars());
 
 				// add review info to the user
@@ -299,6 +299,30 @@ public class MP5AbstractDb<T> implements MP5Db<T> {
 		} catch (Exception e) {
 			throw new IllegalArgumentException("ERR: INVALID_REVIEW_STRING");
 		}
+	}
+	
+	/**
+	 * getRestaurant - Takes in a businessID and searches this YelpDb for the
+	 * restaurant with that business businessID and returns the Restuarant.
+	 * 
+	 * @param business_id
+	 *            - The string of the business_ID of the restaurant to search for in
+	 *            the Yelp database, must not be null
+	 * @return The Restaurant with the provided businessID, or throws an
+	 *         IllegalArgumentException is the restaurant doesn't exist.
+	 */
+	public Business getBusiness(String business_id) {
+		Business biz = null;
+		// no data races!
+		synchronized (sync) {
+			for (Business restaurant : business) {
+				biz = restaurant;
+				if (biz.getBusinessID().equals(business_id)) {
+					return biz;
+				}
+			}
+		}
+		throw new IllegalArgumentException("ERR: NO SUCH BUSINESS");
 	}
 	
 	/**
