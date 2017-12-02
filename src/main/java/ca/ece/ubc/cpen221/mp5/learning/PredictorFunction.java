@@ -21,18 +21,18 @@ public class PredictorFunction {
 	
 	// Rep Invariant: The list of restaurants must all point to a valid restaurant in the database and
 	// the list of reviews must all point to a valid review in the database
-	private List<Restaurant> restaurants = new ArrayList<Restaurant>();
+	private List<? extends Business> restaurants = new ArrayList<Restaurant>();
 	private List<Review> reviews = new ArrayList<Review>();
 
 	/**
 	 * Takes a list of reviews and a list of Restaurants from a YelpDb to calculate the
 	 * getPredictorFunction
 	 * 
-	 * @param Restaurants a non null list of Reviews from the database
+	 * @param business a non null list of Reviews from the database
 	 * @param Reviews a non-null list of Restaurants from the database
 	 */
-	public PredictorFunction(List<Restaurant> Restaurants, List<Review> Reviews) {
-		restaurants = Restaurants;
+	public PredictorFunction(List<? extends Business> business, List<Review> Reviews) {
+		restaurants = business;
 		reviews = Reviews;
 	}
 
@@ -42,6 +42,7 @@ public class PredictorFunction {
      * user for a restaurant based on a restaurant's price. The getPredictorFunction returns a 
      * ToDoubleBifunction which can take any database of type MP5Db<Restaurant> and a restaurantID
      * which can be used to find the predicted rating of a restaurant in the database for this user.
+	 * @param <T>
 	 *
 	 *
 	 * @param user - a non-null string representing the user_id of the user which is already in the database
@@ -51,9 +52,9 @@ public class PredictorFunction {
 	 * 			can only return a double value between 1.0 and 5.0. If all the restaurants for a user have
 	 * 			the same price, or if there are no reviews or restaurants a IllegalArgumentException is thrown.
 	 */
-	public ToDoubleBiFunction<MP5Db<Restaurant>, String> getPredictorFunction(String user) {
+	public <T> ToDoubleBiFunction<MP5Db<T>, String> getPredictorFunction(String user) {
 		
-		List<Restaurant> Restaurants = new ArrayList<Restaurant>();
+		List<Business> Business = new ArrayList<Business>();
 		List<Review> Reviews = new ArrayList<Review>();
 		List<Double> sumMeanx = new ArrayList<Double>();
 		List<Double> sumMeany = new ArrayList<Double>();
@@ -66,15 +67,15 @@ public class PredictorFunction {
 		double a;
 		double Rsquared;
 
-		Restaurants = this.getRestaurantReviews(user);
+		Business = this.getRestaurantReviews(user);
 		Reviews = this.getUserReviews(user);
-		if (Reviews.isEmpty() || Restaurants.isEmpty()) {
+		if (Reviews.isEmpty() || Business.isEmpty()) {
 			throw new IllegalArgumentException();
 		}
 
 		
-		int price = Restaurants.get(0).getPrice();
-		for (Restaurant rest : Restaurants) {
+		int price = Business.get(0).getPrice();
+		for (Business rest : Business) {
 			if (rest.getPrice() != price) {
 				price = -1;
 			}
@@ -87,9 +88,9 @@ public class PredictorFunction {
 		// Calcuate the avg rating for a list of reviews
 		avgY = calcAvgY(Reviews);
 		// Calculate the avg Price for a list of restaurants
-		avgX = calcAvgX(Restaurants);
+		avgX = calcAvgX(Business);
 		// Store all the (price(i) - price(avg)) for a list of Restaurants in a List of doubles
-		sumMeanx = sumMeanX(Restaurants, avgX);
+		sumMeanx = sumMeanX(Business, avgX);
 		// Store all the (price(i) - price(avg)) for a list of Restaurants in a List of doubles
 		sumMeany = sumMeanY(Reviews, avgY);
 
@@ -108,7 +109,7 @@ public class PredictorFunction {
 		Rsquared = Sxy * Sxy / (Sxx * Syy);
 
 		// Declare the ToDoubleBiFunction
-		ToDoubleBiFunction<MP5Db<Restaurant>, String> function = (MP5, restaurant_id) -> {
+		ToDoubleBiFunction<MP5Db<T>, String> function = (MP5, restaurant_id) -> {
 			//Cast MP5Db<Restaurant> as type YelpDb
 			YelpDB db = (YelpDB) MP5;
 			double pr = db.getRestaurant(restaurant_id).getPrice();
@@ -131,8 +132,8 @@ public class PredictorFunction {
 	}
 
 	// used to get the restaurant reviews for a user given a user_ID
-	private List<Restaurant> getRestaurantReviews(String user_ID) throws IllegalArgumentException {
-		List<Restaurant> restaurants = new ArrayList<Restaurant>();
+	private List<Business> getRestaurantReviews(String user_ID) throws IllegalArgumentException {
+		List<Business> restaurants = new ArrayList<Business>();
 
 		for (Review review : reviews) {
 			String userID = review.getUserID();
@@ -140,7 +141,7 @@ public class PredictorFunction {
 			if (userID.equals(user_ID)) {
 				String BusinessID = review.getBusinessID();
 				
-				for (Restaurant restaurant : this.restaurants) {
+				for (Business restaurant : this.restaurants) {
 					if (BusinessID.equals(restaurant.getBusinessID())) {
 						restaurants.add(restaurant);
 					}
@@ -152,22 +153,22 @@ public class PredictorFunction {
 	}
 
 	// used to sum all the price(i) - price(avg) for a list of restaurants for the linear regression
-	private List<Double> sumMeanX(List<Restaurant> Restaurants, double avg) {
+	private List<Double> sumMeanX(List<Business> business, double avg) {
 		List<Double> sumMean = new ArrayList<Double>();
 
-		for (Restaurant restaurant : Restaurants) {
-			int price = restaurant.getPrice();
+		for (Business biz : business) {
+			int price = biz.getPrice();
 			sumMean.add(price - avg);
 		}
 		return sumMean;
 	}
 
 	// used to find the avg price from a list of restaurants
-	private double calcAvgX(List<Restaurant> Restaurants) {
+	private double calcAvgX(List<Business> business) {
 		double avg = 0.0;
 		int count = 0;
-		for (int i = 0; i < Restaurants.size(); i++) {
-			avg += Restaurants.get(i).getPrice();
+		for (int i = 0; i < business.size(); i++) {
+			avg += business.get(i).getPrice();
 			count++;
 		}
 

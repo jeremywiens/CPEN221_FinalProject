@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="ca.ubc.ece.cpen221.mp5.tests.PredictorTests" tests="2" skipped="0" failures="0" errors="0" timestamp="2017-12-02T07:16:23" hostname="GoldNSexy" time="2.932">
+  <properties/>
+  <testcase name="test" classname="ca.ubc.ece.cpen221.mp5.tests.PredictorTests" time="1.503"/>
+  <testcase name="test1" classname="ca.ubc.ece.cpen221.mp5.tests.PredictorTests" time="1.429"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

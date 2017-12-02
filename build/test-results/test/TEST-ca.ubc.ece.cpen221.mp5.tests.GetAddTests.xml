@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="ca.ubc.ece.cpen221.mp5.tests.GetAddTests" tests="1" skipped="0" failures="0" errors="0" timestamp="2017-12-02T07:16:15" hostname="GoldNSexy" time="2.067">
+  <properties/>
+  <testcase name="test" classname="ca.ubc.ece.cpen221.mp5.tests.GetAddTests" time="2.067"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
