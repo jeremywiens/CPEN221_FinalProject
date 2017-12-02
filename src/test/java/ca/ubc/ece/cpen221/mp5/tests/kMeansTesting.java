@@ -65,7 +65,7 @@ public class kMeansTesting {
 		YelpDB hello = new YelpDB("data/restaurants.json", "data/reviews.json", "data/users.json");
 		hello.kMeansClusters_json(18);
 
-		System.out.println(hello.kMeansClusters_json(10));
+		//System.out.println(hello.kMeansClusters_json(10));
 
 		// Read comment above
 		//I made a really cool test for this, also deleted, not making again.
