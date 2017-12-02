@@ -15,7 +15,7 @@ import javax.json.stream.JsonParser.Event;
 * A restaurant can be called to get different information for each instance of a restaurant.
 * 
 */
-public class Restaurant {
+public class Restaurant extends Business {
 	
 	// Abstraction function: Restaurant exists as a combination of Strings,
 	// integers, List of Strings, and doubles to store the information contained
