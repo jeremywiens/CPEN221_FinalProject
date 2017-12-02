@@ -5,8 +5,6 @@ import java.net.Socket;
 import java.util.List;
 import java.util.Scanner;
 
-import ca.ece.ubc.cpen221.mp5.YelpDBServer;
-
 /**
  * Source: The Skeleton for this code is from the CPEN 221 course website. The
  * github repo can be found at https://github.com/CPEN-221/FibonacciServer
@@ -82,6 +80,14 @@ public class YelpDBClient {
 		socket.close();
 	}
 
+	/**
+	 * tesing is a method which is solely for testing purposes.
+	 * 
+	 * @param port
+	 *            requires 0 <= port <= 65535
+	 * @param input
+	 *            List of Strings which will be sent as requests to the server
+	 */
 	public static void testing(int port, List<String> input) {
 		try {
 			YelpDBClient client = new YelpDBClient("localhost", port);
@@ -89,7 +95,7 @@ public class YelpDBClient {
 			// restaurants need latitude, longtitude, and name, cant have duplicate id
 			// reviews need busniess id, user id, and stars
 
-			for(String s: input) {
+			for (String s : input) {
 				client.sendRequest(s.trim());
 				// collect the replies
 				String reply = client.getReply();
@@ -127,9 +133,9 @@ public class YelpDBClient {
 			// users need just a name, cant have duplicate id
 			// restaurants need latitude, longtitude, and name, cant have duplicate id
 			// reviews need busniess id, user id, and stars
-			
+
 			System.out.println("Welcome: \nTo quit, type <close>");
-			
+
 			while (bools) {
 
 				Scanner scanner = new Scanner(System.in);

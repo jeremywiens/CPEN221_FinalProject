@@ -118,14 +118,6 @@ public class Business {
 		return true;
 	}
 
-	public Boolean getOpen() {
-		return this.open;
-	}
-
-	public String getUrl() {
-		return this.url;
-	}
-
 	public BigDecimal getLatitude() {
 		return this.latitude;
 	}
@@ -134,76 +126,7 @@ public class Business {
 		return this.longitude;
 	}
 
-	public List<String> getNeighborhoods() {
-		return this.neighborhoods;
-	}
-
 	public String getBusinessID() {
 		return this.business_id;
 	}
-
-	public String getName() {
-		return this.name;
-	}
-
-	public List<String> getCategories() {
-		return this.categories;
-	}
-
-	public String getState() {
-		return this.state;
-	}
-
-	public String getType() {
-		return this.type;
-	}
-
-	public int getStars() {
-		return this.stars;
-	}
-
-	public String getCity() {
-		return this.city;
-	}
-
-	public String getAddress() {
-		return this.full_address;
-	}
-
-	public int getNumReviews() {
-		return this.review_count;
-	}
-
-	public String getPhotoURL() {
-		return this.photo_url;
-	}
-
-	public int getPrice() {
-		return this.price;
-	}
-
-	@Override
-	public String toString() {
-		JsonArrayBuilder Neighborhood = Json.createArrayBuilder();
-		JsonArrayBuilder Categories = Json.createArrayBuilder();
-
-		for (String str : this.neighborhoods) {
-			Neighborhood.add(str);
-		}
-
-		for (String str : this.categories) {
-			Categories.add(str);
-		}
-
-		JsonObject rest = Json.createObjectBuilder().add("open", this.open).add("url", this.url)
-				.add("longitude", this.longitude).add("neighborhoods", Neighborhood)
-				.add("business_id", this.business_id).add("name", this.name).add("categories", Categories)
-				.add("state", this.state).add("stars", this.stars).add("city", this.city)
-				.add("full_address", this.full_address).add("review_count", this.review_count)
-				.add("photo_url", this.photo_url).add("latitude", this.latitude)
-				.add("price", this.price).add("type", this.type).build();
-
-		return rest.toString();
-	}
-
 }

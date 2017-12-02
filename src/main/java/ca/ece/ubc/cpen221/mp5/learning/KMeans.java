@@ -35,7 +35,8 @@ public class KMeans {
 	 *            are the values, has it's x coordinate at the first index and y
 	 *            coordinate at the second index. All other numbers are ignored.
 	 * @param k
-	 *            is the number of clusters to be formed.
+	 *            is the number of clusters to be formed. requires 0 < k < objects to be
+	 *            clustered
 	 * @return Returns a list of sets of Integers, where each Integer is the same
 	 *         Integer from the given map. Each set is a cluster.
 	 */
@@ -46,6 +47,7 @@ public class KMeans {
 		// Create the sets based on its map. Each cluster number from clusteredMap will
 		// create a new set in this list.
 		List<Set<Integer>> clusteredList = new ArrayList<Set<Integer>>();
+
 		for (int i = 0; i < k; i++) {
 			Set<Integer> kCluster = new HashSet<>();
 			for (int Restaurant : clusteredMap.keySet()) {
@@ -258,6 +260,22 @@ public class KMeans {
 		return firstKPoints;
 	}
 
+	/**
+	 * The purpose of this is to find all of the clusters which will have children,
+	 * the rest need to be re-evaluated till they have children.
+	 * 
+	 * @param thisMap
+	 *            is the same map from findKMeans. thisMap is the map which will be
+	 *            clustered. The key values are Integers which resemble each
+	 *            individual point, the list of doubles, which are the values, has
+	 *            it's x coordinate at the first index and y coordinate at the
+	 *            second index. All other numbers are ignored.
+	 * @param k
+	 *            is the number of clusters to be formed.
+	 * @param firstKPoints
+	 *            are the potential initial cluster locations
+	 * @return a list of clusters which currently have children.
+	 */
 	private static List<Integer> nonEmptyClusters(Map<Integer, List<Double>> thisMap, int k,
 			HashMap<Integer, List<Double>> firstKPoints) {
 
