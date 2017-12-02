@@ -88,7 +88,7 @@ public class MP5AbstractDb<T> implements MP5Db<T> {
 		try {
 			business = ParseJSON.ParseBusiness(business_file);
 		} catch (Exception e) {
-			throw new IOException("Cannot read restaurants_file");
+			throw new IOException("Cannot read business_file");
 		}
 		try {
 			reviews = ParseJSON.ParseReview(reviews_file);
@@ -146,7 +146,7 @@ public class MP5AbstractDb<T> implements MP5Db<T> {
 		// Map Integers to Restaurants
 		int count = 0;
 		HashMap<Integer, List<Double>> sendToKeans = new HashMap<>();
-		HashMap<Integer, Business> intToRestaurant = new HashMap<>();
+		HashMap<Integer, Business> intToBiz = new HashMap<>();
 
 		// Get the x and y coordinates of restaurants based on latitude and longitude.
 		for (Business R : business) {
@@ -154,7 +154,7 @@ public class MP5AbstractDb<T> implements MP5Db<T> {
 			xAndY.add(R.getLatitude());
 			xAndY.add(R.getLongitude());
 			sendToKeans.put(count, xAndY);
-			intToRestaurant.put(count, R);
+			intToBiz.put(count, R);
 			count++;
 		}
 
@@ -165,10 +165,10 @@ public class MP5AbstractDb<T> implements MP5Db<T> {
 		// Create the proper string with JSON format
 		int cluster = 0;
 		for (Set<Integer> clusterSet : clusteredList) {
-			for (int restaurant : clusterSet) {
-				returnString = returnString + "{\"x\": " + intToRestaurant.get(restaurant).getLatitude() + ", \"y\": "
-						+ intToRestaurant.get(restaurant).getLongitude() + ", \"name\": \""
-						+ intToRestaurant.get(restaurant).getName() + "\", \"cluster\": " + cluster
+			for (int business : clusterSet) {
+				returnString = returnString + "{\"x\": " + intToBiz.get(business).getLatitude() + ", \"y\": "
+						+ intToBiz.get(business).getLongitude() + ", \"name\": \""
+						+ intToBiz.get(business).getName() + "\", \"cluster\": " + cluster
 						+ ", \"weight\": 4.0}, ";
 			}
 			cluster++;
@@ -181,10 +181,10 @@ public class MP5AbstractDb<T> implements MP5Db<T> {
 	/**
 	 * getPredictorFunction - Takes a String representing the user_ID for a user.
 	 * The getPredictorFunction finds the user from the userID and using the user's
-	 * information, calculates the most likely rating by this user for a restaurant
-	 * based on a restaurant's price. The getPredictorFunction returns a
-	 * ToDoubleBifunction which can take any database of type MP5Db<Restaurant> and
-	 * a restaurantID which can be used to find the predicted rating of a restaurant
+	 * information, calculates the most likely rating by this user for a business
+	 * based on a business' price. The getPredictorFunction returns a
+	 * ToDoubleBifunction which can take any database of type MP5Db<T> and
+	 * a restaurantID which can be used to find the predicted rating of a business
 	 * in the database for this user.
 	 *
 	 *
@@ -192,12 +192,12 @@ public class MP5AbstractDb<T> implements MP5Db<T> {
 	 *            - a non-null string representing the user_id of the user which is
 	 *            already in the database
 	 * @return a ToDoubleBiFunction which can take in a database of type
-	 *         MP5Db<Restaurant> and a non-null string representation of a
+	 *         MP5Db<T> and a non-null string representation of a
 	 *         restaurantID and calculate the expected rating of this user for this
-	 *         restaurant in the MP5Db<Restaurant> database based on the restaurants
+	 *         restaurant in the MP5Db<T> database based on the restaurants
 	 *         price. The function can only return a double value between 1.0 and
-	 *         5.0. If all the restaurants for a user have the same price, or if
-	 *         there are no reviews or restaurants a IllegalArgumentException is
+	 *         5.0. If all the businesses for a user have the same price, or if
+	 *         there are no reviews or business a IllegalArgumentException is
 	 *         thrown.
 	 */
 	@Override
@@ -208,8 +208,6 @@ public class MP5AbstractDb<T> implements MP5Db<T> {
 
 		return function;
 	}
-
-
 
 	/**
 	 * AddUser - Takes in a string in JSON format representing a user to be added to
@@ -250,8 +248,8 @@ public class MP5AbstractDb<T> implements MP5Db<T> {
 	 * added to the database. The review is added to the database provided that all
 	 * the review information is provided in JSON format excluding the information
 	 * for reviewID, text, votes and type of the review. The review information is
-	 * added to the user who wrote it and is added to the restaurant which the
-	 * review is given for. If the restaurant is not in the database, an
+	 * added to the user who wrote it and is added to the business which the review
+	 * is given for. If the business is not in the database, an
 	 * IllegalArgumentException is thrown. An IllegalArgumentException is also
 	 * thrown if the user is not already in the database. If the review_ID already
 	 * exists in this database, a new unique reviewID is generated. If the string is
@@ -269,6 +267,7 @@ public class MP5AbstractDb<T> implements MP5Db<T> {
 			// checks if this review's businessID is already a restaurant, if not throws an
 			// exception
 			if (!business_IDs.contains(newReview.getBusinessID())) {
+				// left this as no such restaurant for the sake of the server
 				throw new IllegalArgumentException("ERR: NO_SUCH_RESTAURANT");
 				// checks if this review's userID is already a user, if not throws an exception
 			} else if (!user_IDs.contains(newReview.getUserID())) {
@@ -300,10 +299,10 @@ public class MP5AbstractDb<T> implements MP5Db<T> {
 			throw new IllegalArgumentException("ERR: INVALID_REVIEW_STRING");
 		}
 	}
-	
+
 	/**
-	 * getRestaurant - Takes in a businessID and searches this YelpDb for the
-	 * restaurant with that business businessID and returns the Restuarant.
+	 * getBusiness - Takes in a businessID and searches this YelpDb for the
+	 * restaurant with that business businessID and returns the Business.
 	 * 
 	 * @param business_id
 	 *            - The string of the business_ID of the restaurant to search for in
@@ -324,13 +323,12 @@ public class MP5AbstractDb<T> implements MP5Db<T> {
 		}
 		throw new IllegalArgumentException("ERR: NO SUCH BUSINESS");
 	}
-	
+
 	/**
 	 * 
-	 * getRestaurant - Takes in a userID and searches this YelpDb for the restaurant
-	 * with that business businessID and returns the User.
+	 * getUser - Takes in a userID and searches this Db and returns the User.
 	 * 
-	 * @param business_id
+	 * @param user_id
 	 *            - The string of the userID for the user to search for in the Yelp
 	 *            database, must not be null
 	 * @return The User with the provided userID, or throws an

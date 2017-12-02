@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="ca.ubc.ece.cpen221.mp5.tests.ItemTests" tests="6" skipped="0" failures="0" errors="0" timestamp="2017-12-02T07:16:18" hostname="GoldNSexy" time="0.017">
+<testsuite name="ca.ubc.ece.cpen221.mp5.tests.ItemTests" tests="6" skipped="0" failures="0" errors="0" timestamp="2017-12-02T07:32:00" hostname="GoldNSexy" time="0.0">
   <properties/>
-  <testcase name="test1" classname="ca.ubc.ece.cpen221.mp5.tests.ItemTests" time="0.003"/>
-  <testcase name="test2" classname="ca.ubc.ece.cpen221.mp5.tests.ItemTests" time="0.006"/>
-  <testcase name="test3" classname="ca.ubc.ece.cpen221.mp5.tests.ItemTests" time="0.001"/>
-  <testcase name="test4" classname="ca.ubc.ece.cpen221.mp5.tests.ItemTests" time="0.001"/>
-  <testcase name="test5" classname="ca.ubc.ece.cpen221.mp5.tests.ItemTests" time="0.001"/>
-  <testcase name="test6" classname="ca.ubc.ece.cpen221.mp5.tests.ItemTests" time="0.001"/>
+  <testcase name="test1" classname="ca.ubc.ece.cpen221.mp5.tests.ItemTests" time="0.0"/>
+  <testcase name="test2" classname="ca.ubc.ece.cpen221.mp5.tests.ItemTests" time="0.0"/>
+  <testcase name="test3" classname="ca.ubc.ece.cpen221.mp5.tests.ItemTests" time="0.0"/>
+  <testcase name="test4" classname="ca.ubc.ece.cpen221.mp5.tests.ItemTests" time="0.0"/>
+  <testcase name="test5" classname="ca.ubc.ece.cpen221.mp5.tests.ItemTests" time="0.0"/>
+  <testcase name="test6" classname="ca.ubc.ece.cpen221.mp5.tests.ItemTests" time="0.0"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
